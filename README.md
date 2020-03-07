@@ -1,2 +1,2 @@
 # Our Heroes
- Gratitude for our sri lankan heroes
+ Gratitude to our sri lankan heroes
