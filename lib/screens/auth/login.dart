@@ -4,6 +4,10 @@ import 'package:our_heroes/services/auth.dart';
 import 'package:our_heroes/utilities/styles.dart';
 
 class Login extends StatefulWidget {
+
+  final Function toggleView;
+  Login({this.toggleView});
+
   @override
   _LoginState createState() => _LoginState();
 }
@@ -13,6 +17,10 @@ class _LoginState extends State<Login> {
   bool _rememberMe = false;
 
   final AuthService _auth = AuthService();
+
+  // text field state
+  String email = '';
+  String password = '';
 
   Widget _buildEmailTF() {
     return Column(
@@ -28,6 +36,10 @@ class _LoginState extends State<Login> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            onChanged: (value) {
+              setState(() => email = value);
+
+            },
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
               color: Colors.white,
@@ -63,6 +75,9 @@ class _LoginState extends State<Login> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            onChanged: (value) {
+              setState(() => password = value);
+            },
             obscureText: true,
             style: TextStyle(
               color: Colors.white,
@@ -132,15 +147,7 @@ class _LoginState extends State<Login> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () async {
-          dynamic result  = await _auth.signInAnon();
-          
-          if(!(result == null)){
-            print('done');
-            print(result);
-          }
-          else{
-            print('error');
-          }
+          widget.toggleView();
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(

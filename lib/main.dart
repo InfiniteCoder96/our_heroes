@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:our_heroes/models/user.dart';
+import 'package:our_heroes/screens/home/home.dart';
 import 'package:our_heroes/screens/wrapper.dart';
+import 'package:our_heroes/services/auth.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:our_heroes/screens/onboarding_screen.dart';
 
@@ -9,8 +13,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   initScreen = await prefs.getInt("initScreen");
-  await prefs.setInt("initScreen", 1);
   print('initScreen ${initScreen}');
+  await prefs.setInt("initScreen", 1);
   runApp(MyApp());
 }
 
@@ -18,10 +22,16 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Our Heroes',
-      debugShowCheckedModeBanner: false,
-      home: initScreen != null || initScreen == 1 ? OnboardingScreen() : Wrapper(),
+    return StreamProvider<User>.value(
+        value: AuthService().userAuthState,
+        child: MaterialApp(
+          title: 'Our Heroes',
+          debugShowCheckedModeBanner: false,
+          home: initScreen == 0 || initScreen == null ? OnboardingScreen() : Wrapper(),
+          routes: {
+            "/home": (_) => new Home(),
+          },
+        ),
     );
   }
 }
