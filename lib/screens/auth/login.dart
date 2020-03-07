@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:our_heroes/services/auth.dart';
 import 'package:our_heroes/utilities/styles.dart';
 
 class Login extends StatefulWidget {
@@ -8,7 +9,10 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
   bool _rememberMe = false;
+
+  final AuthService _auth = AuthService();
 
   Widget _buildEmailTF() {
     return Column(
@@ -127,7 +131,17 @@ class _LoginState extends State<Login> {
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () => print('Login Button Pressed'),
+        onPressed: () async {
+          dynamic result  = await _auth.signInAnon();
+          
+          if(!(result == null)){
+            print('done');
+            print(result);
+          }
+          else{
+            print('error');
+          }
+        },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),

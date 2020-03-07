@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:our_heroes/screens/wrapper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:our_heroes/screens/onboarding_screen.dart';
-import 'package:our_heroes/screens/Login.dart';
 
 int initScreen;
 
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Our Heroes',
       debugShowCheckedModeBanner: false,
-      home: initScreen != null || initScreen == 1 ? OnboardingScreen() : Login(),
+      home: initScreen != null || initScreen == 1 ? OnboardingScreen() : Wrapper(),
     );
   }
 }
