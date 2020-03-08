@@ -147,7 +147,7 @@ class _LoginState extends State<Login> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () async {
-          widget.toggleView();
+          
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -236,7 +236,9 @@ class _LoginState extends State<Login> {
 
   Widget _buildSignupBtn() {
     return GestureDetector(
-      onTap: () => print('Sign Up Button Pressed'),
+      onTap: () {
+        widget.toggleView();
+      },
       child: RichText(
         text: TextSpan(
           children: [
