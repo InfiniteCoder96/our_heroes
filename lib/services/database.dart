@@ -7,7 +7,7 @@ class DatabaseService{
 
   //collection reference
   final CollectionReference favHeroCollection = Firestore.instance.collection('fav_heroes');
-  final CollectionReference heroCollection = Firestore.instance.collection('fav_heroes');
+  final CollectionReference heroCollection = Firestore.instance.collection('heroes');
 
 
   Future updateUserData(String heroid) async{
