@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:our_heroes/screens/home/heroDetailScreen.dart';
 import 'package:our_heroes/screens/home/settings.dart';
 import 'package:our_heroes/services/hero.dart';
 import 'package:our_heroes/shared/loading.dart';
@@ -105,6 +106,14 @@ class _HomeState extends State<Home> {
         itemBuilder: (context, i){
           return new Card(
             child: ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HeroDetailScreen(hero: heroes.documents[i]),
+                  ),
+                );
+              },
               leading: FlutterLogo(size: 72.0),
               title: Text(heroes.documents[i].data['heroName']),
               subtitle: Text(heroes.documents[i].data['heroDesc']),
