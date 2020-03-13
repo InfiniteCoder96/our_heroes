@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:our_heroes/screens/auth/register.dart';
 import 'package:our_heroes/services/auth.dart';
+import 'package:our_heroes/shared/loading.dart';
 import 'package:our_heroes/utilities/styles.dart';
 
 class Login extends StatefulWidget {
@@ -18,6 +19,7 @@ class _LoginState extends State<Login> {
   bool _rememberMe = false;
 
   final AuthService _auth = AuthService();
+  bool loading = false;
 
   // text field state
   String email = '';
@@ -148,7 +150,17 @@ class _LoginState extends State<Login> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () async {
-          
+          setState(() => loading = true);
+
+            dynamic result = await _auth.signInAnon();
+
+
+            if(result == null){
+              setState(() {
+               
+                loading = false;
+              });
+            }
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -272,7 +284,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: GestureDetector(

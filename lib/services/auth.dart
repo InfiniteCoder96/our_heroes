@@ -7,6 +7,7 @@ class AuthService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Firestore _firestore = Firestore.instance;
+  static FirebaseUser _user;
 
   // create user obj based on firebase user
   User _userFromFirebaseUser(FirebaseUser user){
@@ -40,9 +41,9 @@ class AuthService {
     try{
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
-
+      _user = user;
       // create a new document for the user with the uid
-      await DatabaseService(uid: user.uid).updateUserData(name, email, '');
+      await DatabaseService(uid: user.uid).saveUserData(name, email, '');
 
       return _userFromFirebaseUser(user);
     }
@@ -63,6 +64,19 @@ class AuthService {
       return null;
     }
   }
+
+  //  get cuurent user
+  updateCurrentUserDetails(String userImage) async{
+    try{
+      FirebaseUser _user = await FirebaseAuth.instance.currentUser();
+      await DatabaseService(uid: _user.uid).updateUserData(userImage);
+    }
+    catch(e){
+      print(e);
+      return null;
+    }
+  }
+
 
   // sign out
   Future SignOut() async {
