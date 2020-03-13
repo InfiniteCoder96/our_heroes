@@ -8,11 +8,13 @@ class DatabaseService{
   //collection reference
   final CollectionReference favHeroCollection = Firestore.instance.collection('fav_heroes');
   final CollectionReference heroCollection = Firestore.instance.collection('heroes');
+  final CollectionReference userCollection = Firestore.instance.collection('users');
 
-
-  Future updateUserData(String heroid) async{
-    return await favHeroCollection.document(uid).setData({
-      'heroid': heroid
+  Future updateUserData(String name, String email, String userImage) async{
+    return await userCollection.document(uid).setData({
+      'name': name,
+      'email': email,
+      'userImage': ''
     });
   }
 
@@ -21,5 +23,9 @@ class DatabaseService{
       
       'name': name,
     });
+  }
+
+  Future getUserDetails(){
+    return userCollection.document(this.uid).get();
   }
 }

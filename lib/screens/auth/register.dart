@@ -20,10 +20,61 @@ class _RegisterState extends State<Register> {
   bool loading = false;
 
   // text field state
+  String name = '';
   String email = '';
   String password = '';
 
   String error = '';
+
+  Widget _buildNameTF() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Name',
+          style: kLabelStyle,
+        ),
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: kBoxDecorationStyle,
+          height: 60.0,
+          child: TextFormField(
+            validator: (String value) {
+              if(value.isEmpty){
+                 return 'Name is required.';
+              }
+              else{
+                return null;
+              }
+            }, 
+            onChanged: (value) {
+              setState(() => name = value);
+            },
+            keyboardType: TextInputType.text,
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'OpenSans',
+            ),
+            decoration: InputDecoration(
+              errorStyle: TextStyle(
+                fontSize: 16.0,
+                fontFamily: 'OpenSans',
+              ),
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(
+                Icons.text_fields,
+                color: Colors.white,
+              ),
+              hintText: 'Enter your Name',
+              hintStyle: kHintTextStyle,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   Widget _buildEmailTF() {
     return Column(
@@ -142,7 +193,8 @@ class _RegisterState extends State<Register> {
 
             setState(() => loading = true);
 
-            dynamic result = await _auth.registerWithEmailandPassword(email, password);
+            dynamic result = await _auth.registerUser(name, email, password);
+
 
             if(result == null){
               setState(() {
@@ -238,8 +290,8 @@ class _RegisterState extends State<Register> {
   }
 
   Widget _buildSigninBtn() {
-    return GestureDetector(
-      onTap: () {
+    return FlatButton(
+      onPressed: () {
         widget.toggleView();
       },
       child: RichText(
@@ -249,7 +301,7 @@ class _RegisterState extends State<Register> {
               text: 'Already a member? ',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 18.0,
+                fontSize: 15.0,
                 fontWeight: FontWeight.w400,
               ),
             ),
@@ -257,7 +309,7 @@ class _RegisterState extends State<Register> {
               text: 'Sign In',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 18.0,
+                fontSize: 16.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -316,6 +368,8 @@ class _RegisterState extends State<Register> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+                        SizedBox(height: 30.0),
+                        _buildNameTF(),
                         SizedBox(height: 30.0),
                         _buildEmailTF(),
                         SizedBox(

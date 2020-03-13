@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:our_heroes/screens/user/profile.dart';
 import 'package:our_heroes/services/auth.dart';
 import 'package:our_heroes/services/hero.dart';
-import 'package:our_heroes/shared/loading.dart';
 import 'package:our_heroes/utilities/styles.dart';
 
 class Settings extends StatefulWidget{
@@ -149,7 +149,12 @@ class _SettingsState extends State<Settings>{
             
           ),
           FlatButton.icon(
-            onPressed: () => print('Forgot Password Button Pressed'),
+            onPressed: () async {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Profile()),
+              );
+            },
             icon: Icon(
               Icons.person,
               color: Colors.white,

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:our_heroes/models/user.dart';
 import 'package:our_heroes/services/database.dart';
@@ -5,6 +6,7 @@ import 'package:our_heroes/services/database.dart';
 class AuthService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final Firestore _firestore = Firestore.instance;
 
   // create user obj based on firebase user
   User _userFromFirebaseUser(FirebaseUser user){
@@ -34,15 +36,27 @@ class AuthService {
   // sign in with email & password
 
   // sign up with email & password
-  Future registerWithEmailandPassword(String email, String password) async{
+  Future registerUser(String name, String email, String password) async{
     try{
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
 
       // create a new document for the user with the uid
-      await DatabaseService(uid: user.uid).updateUserData('100');
+      await DatabaseService(uid: user.uid).updateUserData(name, email, '');
 
       return _userFromFirebaseUser(user);
+    }
+    catch(e){
+      print(e);
+      return null;
+    }
+  }
+
+  // get user details
+  Future getUserDetails() async{
+    try{
+      FirebaseUser _user = await FirebaseAuth.instance.currentUser();
+      return await DatabaseService(uid: _user.uid).getUserDetails();
     }
     catch(e){
       print(e);

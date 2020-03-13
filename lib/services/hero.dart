@@ -1,4 +1,3 @@
-
 import 'package:our_heroes/services/database.dart';
 
 class HeroService {

@@ -235,8 +235,8 @@ class _LoginState extends State<Login> {
   }
 
   Widget _buildSignupBtn() {
-    return GestureDetector(
-      onTap: () {
+    return FlatButton(
+      onPressed: () {
         widget.toggleView();
       },
       child: RichText(
@@ -246,7 +246,7 @@ class _LoginState extends State<Login> {
               text: 'Don\'t have an Account? ',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 18.0,
+                fontSize: 15.0,
                 fontWeight: FontWeight.w400,
               ),
             ),
@@ -254,7 +254,7 @@ class _LoginState extends State<Login> {
               text: 'Sign Up',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 18.0,
+                fontSize: 16.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
