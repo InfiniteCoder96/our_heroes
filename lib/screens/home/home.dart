@@ -87,7 +87,6 @@ class _HomeState extends State<Home> {
         ],
       ),
       body: SmartRefresher(
-        enablePullDown: true,
         enablePullUp: true,
         header: WaterDropHeader(),
         controller: _refreshController,

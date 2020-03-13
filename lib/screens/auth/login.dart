@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:our_heroes/screens/auth/register.dart';
 import 'package:our_heroes/services/auth.dart';
 import 'package:our_heroes/utilities/styles.dart';
 
@@ -237,7 +238,12 @@ class _LoginState extends State<Login> {
   Widget _buildSignupBtn() {
     return FlatButton(
       onPressed: () {
-        widget.toggleView();
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Register(),
+          ),
+        );
       },
       child: RichText(
         text: TextSpan(

@@ -29,6 +29,21 @@ class _ProfileState extends State<Profile> {
       return new Scaffold(
         appBar: AppBar(
           backgroundColor:  Color(0xFF1A237E),
+          actions: <Widget>[
+           FlatButton.icon(
+            onPressed: () => print('ff'),
+            icon: Icon(
+              Icons.notifications,
+              color: Colors.white,
+              size: 25.0,
+              
+            ),
+            label: Text(
+              ''
+            ),
+            
+          )
+          ],
         ),
           body: new Stack(
         children: <Widget>[
