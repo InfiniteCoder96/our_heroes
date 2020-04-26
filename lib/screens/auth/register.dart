@@ -96,7 +96,7 @@ class _RegisterState extends State<Register> {
                  return 'Email is required.';
               }
               else if(!(value.contains('@'))){
-                return 'Enter valid email.';
+                return 'Enter valid email address.';
               }
               else{
                 return null;
@@ -378,13 +378,9 @@ class _RegisterState extends State<Register> {
                         _buildNameTF(),
                         SizedBox(height: 30.0),
                         _buildEmailTF(),
-                        SizedBox(
-                          height: 30.0,
-                        ),
+                        SizedBox(height: 30.0),
                         _buildPasswordTF(),
-                        SizedBox(
-                          height: 12.0,
-                        ),
+                        SizedBox(height: 12.0),
                         Text(
                           error,
                           style: TextStyle(

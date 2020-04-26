@@ -1,0 +1,60 @@
+import 'package:flutter/material.dart';
+import 'package:our_heroes/pages/my_heros_page.dart';
+import '../../pages/home_page.dart';
+
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+  int currentTabIndex = 0;
+  List<Widget> pages;
+  Widget currentPage;
+
+  HomePage homePage;
+  MyHerosPage myHerosPage;
+
+  @override
+  void initState() {
+    super.initState();
+    homePage = HomePage();
+    pages = [homePage, myHerosPage];
+
+    currentPage = homePage;
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (int index){
+          setState(() {
+            currentTabIndex = index;
+            currentPage = pages[index];
+          });
+        },
+        backgroundColor: Colors.yellow[800],
+        selectedItemColor: Colors.redAccent[700],
+        unselectedItemColor: Colors.teal[900],
+        currentIndex: currentTabIndex,
+        type: BottomNavigationBarType.fixed,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.offline_bolt),
+            title: Text("Home")
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            title: Text("My Heros")
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            title: Text("Profile")
+          ),
+        ]
+      ),
+      body: currentPage,
+    );
+  }
+}

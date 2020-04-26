@@ -27,7 +27,6 @@ class DatabaseService{
 
   Future updateHeroData(String name, ) async{
     return await heroCollection.document(uid).setData({
-      
       'name': name,
     });
   }

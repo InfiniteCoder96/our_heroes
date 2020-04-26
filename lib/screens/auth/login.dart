@@ -6,7 +6,6 @@ import 'package:our_heroes/shared/loading.dart';
 import 'package:our_heroes/utilities/styles.dart';
 
 class Login extends StatefulWidget {
-
   final Function toggleView;
   Login({this.toggleView});
 
@@ -15,15 +14,18 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
+  final _formKey = GlobalKey<FormState>();
   bool _rememberMe = false;
 
   final AuthService _auth = AuthService();
   bool loading = false;
+  bool _autoValidate = false;
 
   // text field state
   String email = '';
   String password = '';
+
+  String error = '';
 
   Widget _buildEmailTF() {
     return Column(
@@ -38,10 +40,18 @@ class _LoginState extends State<Login> {
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
           height: 60.0,
-          child: TextField(
+          child: TextFormField(
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Email is required.';
+              } else if (!(value.contains('@'))) {
+                return 'Enter valid email address.';
+              } else {
+                return null;
+              }
+            },
             onChanged: (value) {
               setState(() => email = value);
-
             },
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
@@ -77,7 +87,16 @@ class _LoginState extends State<Login> {
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
           height: 60.0,
-          child: TextField(
+          child: TextFormField(
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Password is required.';
+              } else if (value.length < 8) {
+                return 'The password must be at least 8 characters.';
+              } else {
+                return null;
+              }
+            },
             onChanged: (value) {
               setState(() => password = value);
             },
@@ -150,17 +169,25 @@ class _LoginState extends State<Login> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () async {
-          setState(() => loading = true);
+          if (_formKey.currentState.validate()) {
+            _formKey.currentState.save();
 
-            dynamic result = await _auth.signInAnon();
+            setState(() => loading = true);
 
+            dynamic result = await _auth.SignInUser(email, password);
 
-            if(result == null){
+            if (result == null) {
               setState(() {
-               
+                error = 'Sorry, those credentials are not in our system.';
                 loading = false;
               });
             }
+          } else {
+            //    If all data are not valid then start auto validation.
+            setState(() {
+              _autoValidate = true;
+            });
+          }
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -284,70 +311,81 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return loading ? Loading() : Scaffold(
-      body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light,
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: Stack(
-            children: <Widget>[
-              Container(
-                height: double.infinity,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0xFF73AEF5),
-                      Color(0xFF61A4F1),
-                      Color(0xFF478DE0),
-                      Color(0xFF398AE5),
-                    ],
-                    stops: [0.1, 0.4, 0.7, 0.9],
-                  ),
-                ),
-              ),
-              Container(
-                height: double.infinity,
-                child: SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 40.0,
-                    vertical: 120.0,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        'Sign In',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'OpenSans',
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold,
+    return loading
+        ? Loading()
+        : Scaffold(
+            body: AnnotatedRegion<SystemUiOverlayStyle>(
+              value: SystemUiOverlayStyle.light,
+              child: GestureDetector(
+                onTap: () => FocusScope.of(context).unfocus(),
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      height: double.infinity,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color(0xFF73AEF5),
+                            Color(0xFF61A4F1),
+                            Color(0xFF478DE0),
+                            Color(0xFF398AE5),
+                          ],
+                          stops: [0.1, 0.4, 0.7, 0.9],
                         ),
                       ),
-                      SizedBox(height: 30.0),
-                      _buildEmailTF(),
-                      SizedBox(
-                        height: 30.0,
+                    ),
+                    Container(
+                      height: double.infinity,
+                      child: SingleChildScrollView(
+                        physics: AlwaysScrollableScrollPhysics(),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 40.0,
+                          vertical: 120.0,
+                        ),
+                        child: Form(
+                          key: _formKey,
+                          autovalidate: _autoValidate,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                'Sign In',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'OpenSans',
+                                  fontSize: 30.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 30.0),
+                              _buildEmailTF(),
+                              SizedBox(
+                                height: 30.0,
+                              ),
+                              _buildPasswordTF(),
+                              _buildForgotPasswordBtn(),
+                              _buildRememberMeCheckbox(),
+                              SizedBox(height: 12.0),
+                              Text(error,
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 14.0)
+                              ),
+                              _buildLoginBtn(),
+                              _buildSignInWithText(),
+                              _buildSocialBtnRow(),
+                              _buildSignupBtn(),
+                            ],
+                          ),
+                        ),
                       ),
-                      _buildPasswordTF(),
-                      _buildForgotPasswordBtn(),
-                      _buildRememberMeCheckbox(),
-                      _buildLoginBtn(),
-                      _buildSignInWithText(),
-                      _buildSocialBtnRow(),
-                      _buildSignupBtn(),
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+              ),
+            ),
+          );
   }
 }

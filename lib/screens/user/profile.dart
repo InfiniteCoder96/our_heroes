@@ -25,12 +25,15 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
    _auth.getUserDetails().then((results){
+     
+     retrieveLostData();
+      getImage();
+
       setState(() {
         user = results;
         loading = false;
       });
-      retrieveLostData();
-      getImage();
+      
     });
     
 
@@ -117,8 +120,7 @@ class _ProfileState extends State<Profile> {
                       width: 180.0,
                       height: 180.0,
                       child: 
-                      userImageAvailable ? 
-                        ((userImage != null) ? Image.file(userImage,fit:BoxFit.fill) : Image.network(user.data['userImage'],fit: BoxFit.fill))
+                      userImageAvailable ? (userImage != null) ? Image.file(userImage,fit:BoxFit.fill) : Image.network(user.data['userImage'],fit: BoxFit.fill)
                         :                      
                         Image.network(
                           'https://nextgate.com/wp-content/uploads/2018/10/superheros.png',

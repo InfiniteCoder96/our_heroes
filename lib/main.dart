@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:our_heroes/models/user.dart';
-import 'package:our_heroes/screens/home/home.dart';
+import 'package:our_heroes/screens/home/home_screen.dart';
 import 'package:our_heroes/screens/wrapper.dart';
 import 'package:our_heroes/services/auth.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +13,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   initScreen = await prefs.getInt("initScreen");
-  print('initScreen ${initScreen}');
   await prefs.setInt("initScreen", 1);
   runApp(MyApp());
 }
@@ -29,7 +28,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           home: initScreen == 0 || initScreen == null ? OnboardingScreen() : Wrapper(),
           routes: {
-            "/home": (_) => new Home(),
+            "/home": (_) => new HomeScreen(),
           },
         ),
     );

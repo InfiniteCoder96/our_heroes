@@ -1,10 +1,10 @@
-class Hero{
+class Heroo{
 
   final String name;
   final String description;
+  final String shortDescription;
   List<String> imgList;
 
-  Hero(this.name, this.description, this.imgList);
-  
+  Heroo(this.name, this.description, this.shortDescription, this.imgList);
   
 }
