@@ -17,11 +17,7 @@ class _HeroDataState extends State<HeroData> {
 
   @override
   void initState() {
-    _hero.getHeroes().then((results){
-      setState(() {
-        heroes = results;
-      });
-    });
+    
   }
 
   @override

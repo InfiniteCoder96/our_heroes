@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:our_heroes/pages/my_heros_page.dart';
+import 'package:our_heroes/pages/user_profile.dart';
 import '../../pages/home_page.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -15,12 +16,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   HomePage homePage;
   MyHerosPage myHerosPage;
+  UserProfilePage userProfilePage;
 
   @override
   void initState() {
     super.initState();
+    
     homePage = HomePage();
-    pages = [homePage, myHerosPage];
+    myHerosPage = MyHerosPage();
+    userProfilePage = UserProfilePage();
+
+    pages = [homePage, myHerosPage, userProfilePage];
 
     currentPage = homePage;
   }

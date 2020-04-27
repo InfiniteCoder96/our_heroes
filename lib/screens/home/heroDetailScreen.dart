@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:our_heroes/services/hero.dart';
 
 class HeroDetailScreen extends StatefulWidget {
 
@@ -15,18 +16,34 @@ class HeroDetailScreen extends StatefulWidget {
 
 class _HeroDetailScreenState extends State<HeroDetailScreen> {
 
+  HeroService heroService = new HeroService();
+
   bool _alreadyFav = false;
 
+  void checkFavourite() async{
+    bool isFavourite = await heroService.getFavourites(widget.hero.documentID);
+
+    setState(() {
+      _alreadyFav = isFavourite;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkFavourite();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF398AE5),
+        elevation: 0.0,
         actions: <Widget>[
           FlatButton(
             child: Icon(
               _alreadyFav ? Icons.favorite : Icons.favorite_border,
-              color: _alreadyFav ? Colors.red : Colors.white,
+              color: _alreadyFav ? Colors.red[900] : Colors.white,
             ),
             onPressed: () {
               setState(() {
@@ -38,6 +55,7 @@ class _HeroDetailScreenState extends State<HeroDetailScreen> {
                   _alreadyFav = true;
                 }
                 
+                heroService.addToFavourites(widget.hero.documentID);
               });
             },
           )

@@ -34,4 +34,22 @@ class DatabaseService{
   Future getUserDetails(){
     return userCollection.document(this.uid).get();
   }
+
+  addToFavourites(String documentID) async {
+    try {
+      await favHeroCollection
+          .document(this.uid)
+          .setData({
+        'heroes': FieldValue.arrayUnion([documentID])
+      }, merge: true);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  isFavourite(String documentId) async{
+    
+  
+  }
 }

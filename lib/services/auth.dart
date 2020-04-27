@@ -35,7 +35,7 @@ class AuthService {
   }
 
   // sign in with email & password
-  Future SignInUser(String email, String password) async{
+  Future signInUser(String email, String password) async{
     try{
       AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
@@ -91,11 +91,32 @@ class AuthService {
     }
   }
 
+  addToFavourites(String documentID) async {
+    try{
+      FirebaseUser _user = await FirebaseAuth.instance.currentUser();
+      await DatabaseService(uid: _user.uid).addToFavourites(documentID);
+    }
+    catch(e){
+      print(e);
+      return null;
+    }
+  }
+
 
   // sign out
   Future SignOut() async {
     try{
       return await _auth.signOut();
+    }
+    catch(e){
+      print(e);
+      return null;
+    }
+  }
+
+  getFavourites(String documentId) async {
+    try{
+      
     }
     catch(e){
       print(e);

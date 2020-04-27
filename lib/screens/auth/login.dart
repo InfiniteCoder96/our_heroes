@@ -174,7 +174,7 @@ class _LoginState extends State<Login> {
 
             setState(() => loading = true);
 
-            dynamic result = await _auth.SignInUser(email, password);
+            dynamic result = await _auth.signInUser(email, password);
 
             if (result == null) {
               setState(() {
@@ -182,6 +182,7 @@ class _LoginState extends State<Login> {
                 loading = false;
               });
             }
+            
           } else {
             //    If all data are not valid then start auto validation.
             setState(() {
