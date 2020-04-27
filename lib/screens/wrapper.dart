@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:our_heroes/models/user.dart'; 
 import 'package:our_heroes/screens/auth/authenticate.dart';
+import 'package:our_heroes/shared/spalsh.dart';
 import 'package:provider/provider.dart';
-
-import 'home/home_screen.dart';
 
 class Wrapper extends StatelessWidget {
   @override
@@ -16,7 +15,7 @@ class Wrapper extends StatelessWidget {
       return Authenticate();
     }
     else{
-      return HomeScreen();
+      return SplashScreen();
     }
   }
 }

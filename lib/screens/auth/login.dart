@@ -4,6 +4,7 @@ import 'package:our_heroes/screens/auth/register.dart';
 import 'package:our_heroes/services/auth.dart';
 import 'package:our_heroes/shared/loading.dart';
 import 'package:our_heroes/utilities/styles.dart';
+import '../../shared/spalsh.dart';
 
 class Login extends StatefulWidget {
   final Function toggleView;
@@ -181,6 +182,13 @@ class _LoginState extends State<Login> {
                 error = 'Sorry, those credentials are not in our system.';
                 loading = false;
               });
+            }
+            else{
+              setState((){
+                loading = false;
+              });
+
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SplashScreen()));
             }
             
           } else {

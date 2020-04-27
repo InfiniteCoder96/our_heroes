@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:our_heroes/screens/wrapper.dart';
 import 'package:our_heroes/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -20,17 +21,18 @@ class _UserProfilePageState extends State<UserProfilePage> {
   bool userImageAvailable = false;
   bool loading = true;
   bool _loading = false;
+  var userImageFir;
 
   @override
   void initState() {
     _auth.getUserDetails().then((results) {
-      retrieveLostData();
-      getImage();
-
       setState(() {
         user = results;
         loading = false;
       });
+
+      getImage();
+      retrieveLostData();
     });
   }
 
@@ -53,6 +55,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
     if (image != null || image != '') {
       setState(() {
+        userImageFir = image;
         userImageAvailable = true;
       });
     }
@@ -76,6 +79,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
         content: Text('Profile picture updated successfully'),
         backgroundColor: Colors.green,
       ));
+      getImage();
     });
   }
 
@@ -116,9 +120,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
             ),
             FlatButton(
               child: Text('Yes, I am sure'),
-              onPressed: () {
-                Navigator.pop(context);
+              onPressed: () async {
                 _auth.SignOut();
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Wrapper()));
               },
             ),
           ],
@@ -199,10 +203,10 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                       ],
                                       image: DecorationImage(
                                           image: userImageAvailable
-                                              ? (userImage != null)
+                                              ? userImage != null
                                                   ? FileImage(userImage)
                                                   : NetworkImage(
-                                                      user.data['userImage'])
+                                                      userImageFir)
                                               : AssetImage(
                                                   'assets/images/hero.png'),
                                           fit: BoxFit.cover)),
@@ -228,39 +232,55 @@ class _UserProfilePageState extends State<UserProfilePage> {
                               SizedBox(height: 10.0),
                               Row(
                                 children: <Widget>[
-                                  Container(
-                                      height: 25.0,
-                                      width: 70.0,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.indigo[900]),
-                                          borderRadius:
-                                              BorderRadius.circular(20.0)),
-                                      child: Center(
-                                        child: Text(
-                                          "Edit",
-                                          style: TextStyle(
-                                              color: Colors.indigo[900],
-                                              fontSize: 16.0),
-                                        ),
-                                      )),
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: Container(
+                                        height: 25.0,
+                                        width: 70.0,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.indigo[900]),
+                                            borderRadius:
+                                                BorderRadius.circular(20.0)),
+                                        child: Center(
+                                          child: Text(
+                                            "Edit",
+                                            style: TextStyle(
+                                                color: Colors.indigo[900],
+                                                fontSize: 16.0),
+                                          ),
+                                        )),
+                                  ),
                                   SizedBox(width: 10.0),
-                                  userImage != null ? Container(
-                                      height: 25.0,
-                                      width: 70.0,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.yellow[900]),
-                                          borderRadius:
-                                              BorderRadius.circular(20.0)),
-                                      child: Center(
-                                        child: Text(
-                                          "Save",
-                                          style: TextStyle(
-                                              color: Colors.yellow[900],
-                                              fontSize: 16.0),
-                                        ),
-                                      )) :  Container(),
+                                  userImage != null
+                                      ? GestureDetector(
+                                          onTap: () {
+                                            
+                                            uploadpic(context);
+                                            getImage();
+                                            userImage = null;
+                                            
+                                          },
+                                          child: Container(
+                                              height: 25.0,
+                                              width: 70.0,
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color:
+                                                          Colors.yellow[900]),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20.0)),
+                                              child: Center(
+                                                child: Text(
+                                                  "Save",
+                                                  style: TextStyle(
+                                                      color: Colors.yellow[900],
+                                                      fontSize: 16.0),
+                                                ),
+                                              )),
+                                        )
+                                      : Container(),
                                 ],
                               ),
                             ])
@@ -304,6 +324,18 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                 Icon(Icons.refresh, color: Colors.grey),
                                 SizedBox(width: 15.0),
                                 Text("Reset password")
+                              ],
+                            ),
+                            Divider(
+                                height: 10.0, color: Colors.grey, indent: 5.0),
+                            Row(
+                              children: <Widget>[
+                                Icon(Icons.close, color: Colors.red),
+                                SizedBox(width: 15.0),
+                                Text(
+                                  "Deactivate account",
+                                  style: TextStyle(color: Colors.red),
+                                )
                               ],
                             ),
                           ]),

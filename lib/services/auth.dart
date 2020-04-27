@@ -6,8 +6,6 @@ import 'package:our_heroes/services/database.dart';
 class AuthService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final Firestore _firestore = Firestore.instance;
-  static FirebaseUser _user;
 
   // create user obj based on firebase user
   User _userFromFirebaseUser(FirebaseUser user){
@@ -39,7 +37,6 @@ class AuthService {
     try{
       AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
-      _user = user;
 
       return _userFromFirebaseUser(user);
     }
@@ -55,7 +52,6 @@ class AuthService {
     try{
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
-      _user = user;
       // create a new document for the user with the uid
       await DatabaseService(uid: user.uid).saveUserData(name, email, '');
 

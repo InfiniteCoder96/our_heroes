@@ -4,6 +4,7 @@ import 'package:our_heroes/screens/auth/login.dart';
 import 'package:our_heroes/services/auth.dart';
 import 'package:our_heroes/shared/loading.dart';
 import 'package:our_heroes/utilities/styles.dart';
+import '../../shared/spalsh.dart';
 
 class Register extends StatefulWidget {
 
@@ -202,6 +203,13 @@ class _RegisterState extends State<Register> {
                 error = 'The email has already been taken.';
                 loading = false;
               });
+            }
+            else{
+              setState((){
+                loading = false;
+              });
+
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SplashScreen()));
             }
           }
         },
