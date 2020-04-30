@@ -7,4 +7,6 @@ class Heroo{
 
   Heroo(this.name, this.description, this.shortDescription, this.imgList);
   
+  
+
 }

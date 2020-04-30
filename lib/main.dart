@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:our_heroes/models/user.dart';
-import 'package:our_heroes/screens/home/home_screen.dart';
 import 'package:our_heroes/screens/wrapper.dart';
 import 'package:our_heroes/services/auth.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +16,10 @@ Future<void> main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   initScreen = await prefs.getInt("initScreen");
   await prefs.setInt("initScreen", 1);
-  runApp(MaterialApp(home: MyApp()));
+  runApp(StreamProvider<User>.value(
+      value: AuthService().userAuthState,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,home: MyApp())));
 }
 
 class MyApp extends StatefulWidget {
@@ -48,12 +50,25 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-// Be sure to cancel subscription after you are done
+// cancel subscription after you are done
   @override
   dispose() {
     super.dispose();
 
     subscription.cancel();
+  }
+
+  checkConnectivity() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+     
+      Scaffold.of(context)
+        .showSnackBar(SnackBar(content : Text('You\'re now Connected...'), backgroundColor: Colors.green,));
+      
+    } 
+    else{
+       _showDialog();
+    }
   }
 
   void _showDialog() {
@@ -65,7 +80,14 @@ class _MyAppState extends State<MyApp> {
         content: Text('Please turn on your network connection to continue'),
         actions: <Widget>[
           FlatButton(
-            child: Text('Settings'),
+            child: Text('OK, done'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              checkConnectivity();
+            },
+          ),
+          FlatButton(
+            child: Text('Go to settings'),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -75,19 +97,13 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
-
-    return StreamProvider<User>.value(
-      value: AuthService().userAuthState,
-      child: MaterialApp(
-        title: 'Our Heroes',
-        debugShowCheckedModeBanner: false,
-        home: initScreen == 0 || initScreen == null
+    return ((initScreen == 0 || initScreen == null)
             ? OnboardingScreen()
-            : Wrapper(),
-      ),
-    );
-  }
+            : Wrapper());
+      
+    
+  } 
+  
 }

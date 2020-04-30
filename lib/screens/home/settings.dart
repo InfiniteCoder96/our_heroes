@@ -174,7 +174,7 @@ class _SettingsState extends State<Settings>{
             
             onPressed: () async {
               Navigator.pop(context);
-              _auth.SignOut();
+              _auth.signOut();
             },
             icon: Icon(
               Icons.exit_to_app,

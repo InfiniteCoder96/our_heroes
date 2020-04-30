@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:our_heroes/models/user.dart';
 import 'package:our_heroes/services/database.dart';
@@ -76,10 +75,10 @@ class AuthService {
   }
 
   //  get cuurent user
-  updateCurrentUserDetails(String userImage) async{
+  updateCurrentUserDetails(String name, String email, String userImage) async{
     try{
       FirebaseUser _user = await FirebaseAuth.instance.currentUser();
-      await DatabaseService(uid: _user.uid).updateUserData(userImage);
+      await DatabaseService(uid: _user.uid).updateUserData(name, email, userImage);
     }
     catch(e){
       print(e);
@@ -100,7 +99,7 @@ class AuthService {
 
 
   // sign out
-  Future SignOut() async {
+  Future signOut() async {
     try{
       return await _auth.signOut();
     }

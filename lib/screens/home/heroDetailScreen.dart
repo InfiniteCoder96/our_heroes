@@ -1,10 +1,8 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:our_heroes/services/hero.dart';
 
 class HeroDetailScreen extends StatefulWidget {
-
   final DocumentSnapshot hero;
 
   // In the constructor, require a Todo.
@@ -15,12 +13,11 @@ class HeroDetailScreen extends StatefulWidget {
 }
 
 class _HeroDetailScreenState extends State<HeroDetailScreen> {
-
   HeroService heroService = new HeroService();
 
   bool _alreadyFav = false;
 
-  void checkFavourite() async{
+  void checkFavourite() async {
     bool isFavourite = await heroService.getFavourites(widget.hero.documentID);
 
     setState(() {
@@ -33,6 +30,7 @@ class _HeroDetailScreenState extends State<HeroDetailScreen> {
     super.initState();
     checkFavourite();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,21 +45,18 @@ class _HeroDetailScreenState extends State<HeroDetailScreen> {
             ),
             onPressed: () {
               setState(() {
-
-                if(_alreadyFav){
+                if (_alreadyFav) {
                   _alreadyFav = false;
-                }
-                else{
+                } else {
                   _alreadyFav = true;
                 }
-                
+
                 heroService.addToFavourites(widget.hero.documentID);
               });
             },
           )
         ],
       ),
-
       backgroundColor: Color(0xFF398AE5),
       body: LayoutStarts(hero: widget.hero),
     );
@@ -69,7 +64,6 @@ class _HeroDetailScreenState extends State<HeroDetailScreen> {
 }
 
 class LayoutStarts extends StatelessWidget {
-
   final DocumentSnapshot hero;
 
   // In the constructor, require a Todo.
@@ -87,7 +81,6 @@ class LayoutStarts extends StatelessWidget {
 }
 
 class HeroDetailsAnimation extends StatefulWidget {
-
   final DocumentSnapshot hero;
   HeroDetailsAnimation({this.hero});
 
@@ -103,115 +96,65 @@ class _HeroDetailsAnimationState extends State<HeroDetailsAnimation> {
 }
 
 class HeroDetails extends StatelessWidget {
-
   final DocumentSnapshot hero;
   HeroDetails({this.hero});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(left: 30,top: 30,right: 30),
-            child: _heroTitle(),
-          ),
-          Container(
-            width: double.infinity,
-          )
-        ],
-      ));
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.only(left: 30, top: 30, right: 30),
+          child: _heroTitle(),
+        ),
+        Container(
+          width: double.infinity,
+        )
+      ],
+    ));
   }
 
-  _heroTitle(){
+  _heroTitle() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         RichText(
-          text: TextSpan(
-            style: TextStyle(color: Colors.white, fontSize: 38),
-            children: [
+            text: TextSpan(
+                style: TextStyle(color: Colors.white, fontSize: 38),
+                children: [
               TextSpan(text: hero.data['heroName']),
               //TextSpan(text: "\n"),
               //TextSpan(text: hero.data['heroDesc'], style: TextStyle(fontWeight: FontWeight.w700)),
-            ]
-          )
-        ),
+            ])),
         SizedBox(height: 10),
-        
+        ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            child: Stack(
+              children: <Widget>[
+                Container(
+                    color: Colors.blueAccent,
+                    height: 190.0,
+                    width: 160.0,
+                    child: hero.data['heroImage'] != null
+                        ? FadeInImage.assetNetwork(
+                            image: hero.data['heroImage'],
+                            placeholder: 'assets/images/loading.gif',
+                          )
+                        : Image.asset(
+                            'assets/images/hero.png',
+                            fit: BoxFit.cover,
+                          )),
+              ],
+            ),
+          )
       ],
     );
   }
 }
 
-/* class HeroCarousel extends StatefulWidget {
-  @override
-  _HeroCarouselState createState() => _HeroCarouselState();
-}
-
-class _HeroCarouselState extends State<HeroCarousel> {
-
-  static final List<String> imgList = null;
-
-  final List<Widget> child = _map<Widget>(imgList, (index, String assetName){
-    return Container(
-      child: Image.asset("assets/img/$assetName", fit: BoxFit.fitWidth)
-    );
-  }).toList();
-
-  static List<T> _map<T>(List list, Function handler){
-
-    List<T> result = [];
-
-    for(var i = 0; i < list.length; i++){
-      result.add(handler(i, list[i]));
-    }
-
-    return result;
-  }
-
-  int _current = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          CarouselSlider(
-            height: 250,
-            viewportFraction: 1.0,
-            items: child,
-            onPageChanged: (index){
-              setState(() {
-                _current = index;
-              });
-            },
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 25),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: _map<Widget>(imgList, (index, assetName){
-
-                return Container(
-                  width: 50,
-                  height: 2,
-                  decoration: BoxDecoration(
-                    color: _current == index ? Colors.grey[100] : Colors.grey[600]
-                  )
-                );
-              }),
-              ),
-          )
-        ],
-        ),
-    );
-  }
-} */
-
 class CustomBottomSheet extends StatefulWidget {
-
   final DocumentSnapshot hero;
 
   // In the constructor, require a Todo.
@@ -222,7 +165,6 @@ class CustomBottomSheet extends StatefulWidget {
 }
 
 class _CustomBottomSheetState extends State<CustomBottomSheet> {
-
   double sheetTop = 400;
   double minSheetTop = 30;
 
@@ -236,7 +178,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
       child: GestureDetector(
         onTap: () {
           setState(() {
-            isExpanded ? sheetTop = 400: sheetTop = minSheetTop;
+            isExpanded ? sheetTop = 400 : sheetTop = minSheetTop;
             isExpanded = !isExpanded;
           });
         },
@@ -247,7 +189,6 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
 }
 
 class SheetContainer extends StatelessWidget {
-
   final DocumentSnapshot hero;
 
   // In the constructor, require a Todo.
@@ -255,7 +196,6 @@ class SheetContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     double sheetItemHeight = 110;
 
     return Container(
@@ -263,66 +203,53 @@ class SheetContainer extends StatelessWidget {
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
-        color: Colors.white
-      ),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
+          color: Colors.white),
       child: Column(
         children: <Widget>[
           drawerHandle(),
           Expanded(
             flex: 1,
-            child: ListView(
-              children: <Widget>[
-                offerDetails(sheetItemHeight, hero),
-                SizedBox(height: 220)
-              ]
-            ),
+            child: ListView(children: <Widget>[
+              offerDetails(sheetItemHeight, hero),
+              SizedBox(height: 220)
+            ]),
           )
         ],
-        ),
-      
+      ),
     );
   }
 
-  drawerHandle(){
+  drawerHandle() {
     return Container(
       margin: EdgeInsets.only(bottom: 25),
       height: 3,
       width: 65,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: Color(0xFF73AEF5)
-      ),
+          borderRadius: BorderRadius.circular(15), color: Color(0xFF73AEF5)),
     );
   }
 
-  offerDetails(double sheetItemHeight, DocumentSnapshot hero){
+  offerDetails(double sheetItemHeight, DocumentSnapshot hero) {
     return Container(
       padding: EdgeInsets.only(top: 15, left: 20),
       child: Column(
         children: <Widget>[
-          Text(
-            "Hero's Details",
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.w700,
-              fontSize: 18
-            )
-          ),
+          Text("Hero's Details",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18)),
+          
           Container(
             margin: EdgeInsets.only(top: 15),
             height: sheetItemHeight,
             child: RichText(
-              text: TextSpan(
-                style: TextStyle(fontSize:  16),
-                children: [
-                  TextSpan(
+              text: TextSpan(style: TextStyle(fontSize: 16), children: [
+                TextSpan(
                     text: hero.data['heroDesc'],
-                    style: TextStyle(color: Colors.black)
-                  ),
-                  
-                ]
-              ),
+                    style: TextStyle(color: Colors.black)),
+              ]),
             ),
           )
         ],
@@ -332,14 +259,10 @@ class SheetContainer extends StatelessWidget {
 }
 
 class ListItem extends StatelessWidget {
-
   final double sheetItemHeight;
   final Map mapVal;
 
-  ListItem({
-    this.sheetItemHeight,
-    this.mapVal
-  });
+  ListItem({this.sheetItemHeight, this.mapVal});
 
   @override
   Widget build(BuildContext context) {
@@ -353,11 +276,11 @@ class ListItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
       ),
       child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            mapVal.keys.elementAt(0),
-          ],
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          mapVal.keys.elementAt(0),
+        ],
       ),
     );
   }

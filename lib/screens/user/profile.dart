@@ -24,6 +24,7 @@ class _ProfileState extends State<Profile> {
   
   @override
   void initState() {
+    super.initState();
    _auth.getUserDetails().then((results){
      
      retrieveLostData();
@@ -68,7 +69,7 @@ class _ProfileState extends State<Profile> {
 
     StorageTaskSnapshot _taskSnapshot = await _uploadTask.onComplete;
 
-    await _auth.updateCurrentUserDetails( await _storage.getDownloadURL());
+    //await _auth.updateCurrentUserDetails( await _storage.getDownloadURL());
 
     setState(() {
       Scaffold.of(context).showSnackBar(SnackBar(content: Text('Profile picture updated successfully'), backgroundColor: Colors.green,));

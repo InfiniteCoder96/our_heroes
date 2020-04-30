@@ -1,7 +1,8 @@
 import 'package:our_heroes/services/auth.dart';
 import 'package:our_heroes/services/database.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HeroService {
   final String uid;
@@ -29,6 +30,8 @@ class HeroService {
     }
   }
 
+
+
   addToFavourites(String documentId) async {
     AuthService authService = AuthService();
 
@@ -52,5 +55,37 @@ class HeroService {
               return false;
             }
           });
+  }
+
+  getAllFavourites() async{
+
+    FirebaseUser _user = await FirebaseAuth.instance.currentUser();
+    
+
+  
+
+     DocumentSnapshot querySnapshot = await _database.favHeroCollection.document(_user.uid).get();
+
+  if(querySnapshot.exists && querySnapshot.data.containsKey("heroes") &&
+    querySnapshot.data["heroes"] is List){
+    return List<String>.from(querySnapshot.data["heroes"]);
+
+  }
+  return [];
+    
+
+  }
+
+  getHeroByIds(List<String> heroIds) async{
+
+    List<DocumentSnapshot> heroDetails = List();
+ 
+    for(int i = 0; i < heroIds.length; i++){
+     
+      heroDetails.add(await _database.heroCollection.document(heroIds[i]).get());
+      
+    }
+
+    return heroDetails;
   }
 }

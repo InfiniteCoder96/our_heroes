@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../models/hero.dart';
-import '../services/hero.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HeroData extends StatefulWidget {
@@ -10,15 +9,10 @@ class HeroData extends StatefulWidget {
 
 class _HeroDataState extends State<HeroData> {
   
-  List<Heroo> hero_data;
+  List<Heroo> heroData;
 
-  final HeroService _hero = HeroService();
   QuerySnapshot heroes;
 
-  @override
-  void initState() {
-    
-  }
 
   @override
   Widget build(BuildContext context) {

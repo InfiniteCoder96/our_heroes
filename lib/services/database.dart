@@ -18,8 +18,10 @@ class DatabaseService{
     });
   }
 
-  Future updateUserData(String userImage) async{
-    return await userCollection.document(uid).updateData({
+  Future updateUserData(String name, String email, String userImage) async{
+    return await userCollection.document(uid).setData({
+      'name': name,
+      'email': email,
       'userImage': userImage
     });
   }
