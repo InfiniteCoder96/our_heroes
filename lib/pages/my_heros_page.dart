@@ -366,7 +366,7 @@ class _MyHerosPageState extends State<MyHerosPage> {
   @override
   Widget build(BuildContext context) {
     return heroes == null || heroDetails == null
-        ? Loading()
+        ? Loading() 
         : Scaffold(
             key: _scaffoldKey,
             body: Container(

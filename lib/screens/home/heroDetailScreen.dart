@@ -259,7 +259,7 @@ class SheetContainer extends StatelessWidget {
             height: sheetItemHeight,
             child: AutoSizeText(
                     hero.data['heroDesc'],
-                    style: TextStyle(color: Colors.black, fontSize: 35.0)
+                    style: TextStyle(color: Colors.black, fontSize: 20.0)
               ),
             
           )

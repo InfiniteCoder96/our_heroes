@@ -8,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:our_heroes/shared/loading.dart';
 import 'package:our_heroes/utilities/styles.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class UserProfilePage extends StatefulWidget {
   @override
@@ -462,14 +463,14 @@ userName= user.data['name'].toString();
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text(
+                              AutoSizeText(
                                 userNameFir.toString().toUpperCase(),
                                 style: TextStyle(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.bold),
                               ),
                               SizedBox(height: 10.0),
-                              Text(
+                              AutoSizeText(
                                 userEmailFir.toString(),
                                 style: TextStyle(
                                     fontSize: 13.0,
