@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:our_heroes/services/hero.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class HeroDetailScreen extends StatefulWidget {
   final DocumentSnapshot hero;
@@ -122,7 +123,10 @@ class HeroDetails extends StatelessWidget {
       children: <Widget>[
         RichText(
             text: TextSpan(
-                style: TextStyle(color: Colors.white, fontSize: 38),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 38,
+                ),
                 children: [
               TextSpan(text: hero.data['heroName']),
               //TextSpan(text: "\n"),
@@ -130,25 +134,35 @@ class HeroDetails extends StatelessWidget {
             ])),
         SizedBox(height: 10),
         ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            child: Stack(
-              children: <Widget>[
-                Container(
-                    color: Colors.blueAccent,
-                    height: 190.0,
-                    width: 160.0,
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          child: Stack(
+            children: <Widget>[
+              Center(
+                child: Container(
+                  height: 250.0,
+                  width: 200.0,
+                  child: Card(
+                    semanticContainer: true,
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2.0)),
                     child: hero.data['heroImage'] != null
                         ? FadeInImage.assetNetwork(
                             image: hero.data['heroImage'],
                             placeholder: 'assets/images/loading.gif',
+                            fit: BoxFit.fill
                           )
                         : Image.asset(
                             'assets/images/hero.png',
                             fit: BoxFit.cover,
-                          )),
-              ],
-            ),
-          )
+                          ),
+                    elevation: 5,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )
       ],
     );
   }
@@ -232,7 +246,7 @@ class SheetContainer extends StatelessWidget {
 
   offerDetails(double sheetItemHeight, DocumentSnapshot hero) {
     return Container(
-      padding: EdgeInsets.only(top: 15, left: 20),
+      padding: EdgeInsets.all(15.0),
       child: Column(
         children: <Widget>[
           Text("Hero's Details",
@@ -240,17 +254,14 @@ class SheetContainer extends StatelessWidget {
                   color: Colors.black,
                   fontWeight: FontWeight.w700,
                   fontSize: 18)),
-          
           Container(
             margin: EdgeInsets.only(top: 15),
             height: sheetItemHeight,
-            child: RichText(
-              text: TextSpan(style: TextStyle(fontSize: 16), children: [
-                TextSpan(
-                    text: hero.data['heroDesc'],
-                    style: TextStyle(color: Colors.black)),
-              ]),
-            ),
+            child: AutoSizeText(
+                    hero.data['heroDesc'],
+                    style: TextStyle(color: Colors.black, fontSize: 35.0)
+              ),
+            
           )
         ],
       ),
