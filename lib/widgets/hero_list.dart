@@ -81,22 +81,30 @@ class _HeroListState extends State<HeroList> {
                         ),
                       );
                     },
-                    leading: Container(
-                      child: Card(
-                        semanticContainer: true,
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0)),
-                        child: heroes.documents[i].data['heroImage'] != null ? FadeInImage.assetNetwork(
-                                                      image: heroes.documents[i].data['heroImage'],
-                                                      placeholder:
-                                                          'assets/images/loading.gif',
-                                                    ) : Image.asset(
-                          'assets/images/hero.png',
-                          fit: BoxFit.cover,
-                        ),
-                        elevation: 5,
-                      ),
+                    leading: Column(
+                      children: <Widget>[
+                        Container(
+                          width: 50.0,
+                          height: 50.0,
+                          child: Card(
+                            semanticContainer: true,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0)),
+                            child: heroes.documents[i].data['heroImage'] != null
+                                ? FadeInImage.assetNetwork(
+                                    image:
+                                        heroes.documents[i].data['heroImage'],
+                                    placeholder: 'assets/images/loading.gif',
+                                    fit: BoxFit.fill)
+                                : Image.asset(
+                                    'assets/images/hero.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                            elevation: 5,
+                          ),
+                        )
+                      ],
                     ),
                     title: Text(
                       heroes.documents[i].data['heroName'],

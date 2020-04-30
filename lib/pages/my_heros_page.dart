@@ -11,6 +11,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:our_heroes/utilities/styles.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class MyHerosPage extends StatefulWidget {
   @override
@@ -315,14 +316,11 @@ class _MyHerosPageState extends State<MyHerosPage> {
   }
 
   Future addHero(BuildContext context) async {
+    
     _scaffoldKey.currentState.showSnackBar(SnackBar(
         duration: Duration(seconds: 3),
         content: Text('Onboarding your hero...')));
 
-    final collRef = Firestore.instance.collection('heroes');
-    DocumentReference docReference = collRef.document();
-
-    var documentId;
 
     Map<String, String> heroData = {
       'heroName': this.heroName,
@@ -333,11 +331,9 @@ class _MyHerosPageState extends State<MyHerosPage> {
 
     //await _hero.addHero(heroData);
 
-    docReference.setData(heroData).then((doc) {
-      documentId = docReference.documentID;
-    }).catchError((error) {
-      print(error);
-    });
+    DocumentReference docReference = await Firestore.instance.collection('heroes').add(heroData);
+
+    var documentId = docReference.documentID;
 
     var downloadUrl;
 
@@ -430,6 +426,7 @@ class _MyHerosPageState extends State<MyHerosPage> {
                                                           .data['heroImage'],
                                                       placeholder:
                                                           'assets/images/loading.gif',
+                                                          fit: BoxFit.cover,
                                                     )
                                                   : Image.asset(
                                                       'assets/images/hero.png',
@@ -457,30 +454,29 @@ class _MyHerosPageState extends State<MyHerosPage> {
                                             left: 10.0,
                                             bottom: 10.0,
                                             right: 10.0,
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: <Widget>[
+                                            child: 
                                                 Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: <Widget>[
-                                                    Text(
-                                                      heroDetails
-                                                          .elementAt(index)
-                                                          .data['heroName'],
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.white,
-                                                          fontSize: 12.0),
+                                                    AutoSizeText(
+                                                                                                          
+                                                          heroDetails
+                                                              .elementAt(index)
+                                                              .data['heroName'],
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight.bold,
+                                                              color: Colors.white,
+                                                              fontSize: 12.0),
+                                                              maxLines: 2,
+                                                        
                                                     ),
+                                                    
                                                   ],
                                                 ),
-                                              ],
-                                            ),
+                                              
+                                          
                                           )
                                         ],
                                       ),
