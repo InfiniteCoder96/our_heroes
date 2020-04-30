@@ -316,11 +316,9 @@ class _MyHerosPageState extends State<MyHerosPage> {
   }
 
   Future addHero(BuildContext context) async {
-    
     _scaffoldKey.currentState.showSnackBar(SnackBar(
         duration: Duration(seconds: 3),
         content: Text('Onboarding your hero...')));
-
 
     Map<String, String> heroData = {
       'heroName': this.heroName,
@@ -331,7 +329,8 @@ class _MyHerosPageState extends State<MyHerosPage> {
 
     //await _hero.addHero(heroData);
 
-    DocumentReference docReference = await Firestore.instance.collection('heroes').add(heroData);
+    DocumentReference docReference =
+        await Firestore.instance.collection('heroes').add(heroData);
 
     var documentId = docReference.documentID;
 
@@ -371,121 +370,130 @@ class _MyHerosPageState extends State<MyHerosPage> {
         : Scaffold(
             key: _scaffoldKey,
             body: Container(
+              padding: EdgeInsets.only(top: 30.0),
               color: Colors.grey[700],
-              child: SmartRefresher(
-                  enablePullUp: true,
-                  header: WaterDropHeader(),
-                  controller: _refreshController,
-                  onRefresh: _onRefresh,
-                  onLoading: _onLoading,
-                  child: Container(
-                    padding: EdgeInsets.only(top: 30.0),
-                    child: Column(children: <Widget>[
-                      SearchField(),
-                      Expanded(
-                          child: GridView.count(
-                              primary: false,
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
-                              crossAxisSpacing: 5,
-                              mainAxisSpacing: 5,
-                              crossAxisCount: 2,
-                              children: List.generate(
-                                  heroes != null ? heroes.length : 0, (index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              HeroDetailScreen(
-                                            hero: heroDetails != null
-                                                ? heroDetails.elementAt(index)
-                                                : '',
-                                          ),
-                                        ));
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10.0)),
-                                      child: Stack(
-                                        children: <Widget>[
-                                          Container(
-                                              color: Colors.blueAccent,
-                                              height: 190.0,
-                                              width: 160.0,
-                                              child: heroDetails
+              child: Column(
+                children: [
+                  SearchField(),
+                  Expanded(
+                    child: SmartRefresher(
+                        enablePullUp: true,
+                        header: WaterDropHeader(),
+                        controller: _refreshController,
+                        onRefresh: _onRefresh,
+                        onLoading: _onLoading,
+                        child: Container(
+                          child: Column(children: <Widget>[
+                            Expanded(
+                                child: GridView.count(
+                                    primary: false,
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 10.0),
+                                    crossAxisSpacing: 5,
+                                    mainAxisSpacing: 5,
+                                    crossAxisCount: 2,
+                                    children: List.generate(
+                                        heroes != null ? heroes.length : 0,
+                                        (index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    HeroDetailScreen(
+                                                  hero: heroDetails != null
+                                                      ? heroDetails
                                                           .elementAt(index)
-                                                          .data['heroImage'] !=
-                                                      null
-                                                  ? FadeInImage.assetNetwork(
-                                                      image: heroDetails
-                                                          .elementAt(index)
-                                                          .data['heroImage'],
-                                                      placeholder:
-                                                          'assets/images/loading.gif',
-                                                          fit: BoxFit.cover,
-                                                    )
-                                                  : Image.asset(
-                                                      'assets/images/hero.png',
-                                                      fit: BoxFit.cover,
-                                                    )),
-                                          Positioned(
-                                            left: 0.0,
-                                            bottom: 0.0,
-                                            width: 160.0,
-                                            height: 50.0,
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  gradient: LinearGradient(
-                                                      begin: Alignment
-                                                          .bottomCenter,
-                                                      end: Alignment.topCenter,
-                                                      colors: [
-                                                    Colors.black,
-                                                    Colors.black
-                                                        .withOpacity(0.1)
-                                                  ])),
+                                                      : '',
+                                                ),
+                                              ));
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10.0)),
+                                            child: Stack(
+                                              children: <Widget>[
+                                                Container(
+                                                    color: Colors.blueAccent,
+                                                    height: 190.0,
+                                                    width: 160.0,
+                                                    child: heroDetails
+                                                                    .elementAt(
+                                                                        index)
+                                                                    .data[
+                                                                'heroImage'] !=
+                                                            null
+                                                        ? FadeInImage
+                                                            .assetNetwork(
+                                                            image: heroDetails
+                                                                    .elementAt(
+                                                                        index)
+                                                                    .data[
+                                                                'heroImage'],
+                                                            placeholder:
+                                                                'assets/images/loading.gif',
+                                                            fit: BoxFit.cover,
+                                                          )
+                                                        : Image.asset(
+                                                            'assets/images/hero.png',
+                                                            fit: BoxFit.cover,
+                                                          )),
+                                                Positioned(
+                                                  left: 0.0,
+                                                  bottom: 0.0,
+                                                  width: 160.0,
+                                                  height: 50.0,
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        gradient: LinearGradient(
+                                                            begin: Alignment
+                                                                .bottomCenter,
+                                                            end: Alignment
+                                                                .topCenter,
+                                                            colors: [
+                                                          Colors.black,
+                                                          Colors.black
+                                                              .withOpacity(0.1)
+                                                        ])),
+                                                  ),
+                                                ),
+                                                Positioned(
+                                                  left: 10.0,
+                                                  bottom: 10.0,
+                                                  right: 10.0,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: <Widget>[
+                                                      AutoSizeText(
+                                                        heroDetails
+                                                            .elementAt(index)
+                                                            .data['heroName'],
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: Colors.white,
+                                                            fontSize: 12.0),
+                                                        maxLines: 2,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
                                             ),
                                           ),
-                                          Positioned(
-                                            left: 10.0,
-                                            bottom: 10.0,
-                                            right: 10.0,
-                                            child: 
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: <Widget>[
-                                                    AutoSizeText(
-                                                                                                          
-                                                          heroDetails
-                                                              .elementAt(index)
-                                                              .data['heroName'],
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight.bold,
-                                                              color: Colors.white,
-                                                              fontSize: 12.0),
-                                                              maxLines: 2,
-                                                        
-                                                    ),
-                                                    
-                                                  ],
-                                                ),
-                                              
-                                          
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              })))
-                    ]),
-                  )),
+                                        ),
+                                      );
+                                    })))
+                          ]),
+                        )),
+                  ),
+                ],
+              ),
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: () {
