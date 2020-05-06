@@ -109,7 +109,11 @@ class _HeroListState extends State<HeroList> {
                     _deleteAlert(heroes.documents[i].documentID, i);
                   },
                   background: Container(
-                    color: Colors.red,
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topRight,
+                            end: Alignment.bottomLeft,
+                            colors: [Colors.red, Colors.redAccent])),
                     child: Row(
                       children: <Widget>[
                         SizedBox(
@@ -132,7 +136,7 @@ class _HeroListState extends State<HeroList> {
                   ),
                   child: Card(
                     elevation: 3.0,
-                    color: Colors.blueAccent,
+                    color: Colors.white70,
                     child: ListTile(
                       onTap: () {
                         Navigator.push(
@@ -172,13 +176,13 @@ class _HeroListState extends State<HeroList> {
                       title: Text(
                         heroes.documents[i].data['heroName'],
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold),
                       ),
                       subtitle: Text(
                         heroes.documents[i].data['heroShrtDesc'],
-                        style: TextStyle(color: Colors.white, fontSize: 12.0),
+                        style: TextStyle(color: Colors.black, fontSize: 12.0),
                       ),
                       trailing: Icon(Icons.navigate_next),
                     ),

@@ -413,6 +413,11 @@ class _UserProfilePageState extends State<UserProfilePage> {
             key: _scaffoldKey,
             body: SingleChildScrollView(
               child: Container(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: [Colors.blueAccent, Colors.redAccent])),
                 padding: EdgeInsets.symmetric(vertical: 40.0, horizontal: 10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -522,14 +527,14 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                         width: 70.0,
                                         decoration: BoxDecoration(
                                             border: Border.all(
-                                                color: Colors.indigo[900]),
+                                                color: Colors.white70),
                                             borderRadius:
                                                 BorderRadius.circular(20.0)),
                                         child: Center(
                                           child: Text(
                                             "Edit",
                                             style: TextStyle(
-                                                color: Colors.indigo[900],
+                                                color: Colors.white70,
                                                 fontSize: 16.0),
                                           ),
                                         )),
@@ -571,7 +576,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
                     Text(
                       "Account",
                       style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 10.0),
                     Card(
@@ -630,7 +636,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
                     Text(
                       "Notifications",
                       style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 10.0),
                     Card(

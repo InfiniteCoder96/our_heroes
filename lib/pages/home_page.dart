@@ -8,27 +8,25 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-        backgroundColor: Colors.grey[700],
+        // backgroundColor: Colors.grey[700],
         body: Container(
-          padding: EdgeInsets.only(top: 30.0),
-          child: Column(
-            children: <Widget>[
-              SearchField(),
-              Expanded(
-                child: Container(
-                  child: 
-                    HeroList()
-
-                ),
-              ),
-            ],
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [Colors.blue, Colors.red])),
+      padding: EdgeInsets.only(top: 30.0),
+      child: Column(
+        children: <Widget>[
+          SearchField(),
+          Expanded(
+            child: Container(child: HeroList()),
           ),
-        ));
+        ],
+      ),
+    ));
   }
 }

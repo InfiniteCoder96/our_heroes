@@ -36,7 +36,7 @@ class _SearchFeildState extends State<SearchField> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 5.0, left: 8.0, right: 8.0),
       child: Material(
-        color: Colors.red[900],
+        color: Colors.white,
         elevation: 5.0,
         borderRadius: BorderRadius.circular(30.0),
         child: TextField(
@@ -48,7 +48,7 @@ class _SearchFeildState extends State<SearchField> {
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 32.0, vertical: 14.0),
               hintText: "Search your hero",
-              hintStyle: TextStyle(color: Colors.white),
+              hintStyle: TextStyle(color: Colors.black87),
               suffixIcon: Material(
                 elevation: 5.0,
                 borderRadius: BorderRadius.circular(30.0),

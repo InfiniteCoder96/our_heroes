@@ -392,7 +392,11 @@ class _MyHerosPageState extends State<MyHerosPage> {
             key: _scaffoldKey,
             body: Container(
               padding: EdgeInsets.only(top: 30.0),
-              color: Colors.grey[700],
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [Colors.blue, Colors.red])),
               child: Column(
                 children: [
                   SearchField(),

@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
             currentPage = pages[index];
           });
         },
-        backgroundColor: Colors.yellow[800],
+        backgroundColor: Colors.white70,
         selectedItemColor: Colors.redAccent[700],
         unselectedItemColor: Colors.teal[900],
         currentIndex: currentTabIndex,
