@@ -104,8 +104,6 @@ class _HeroListState extends State<HeroList> {
               padding: EdgeInsets.all(5.0),
               itemBuilder: (context, i) {
                 return Dismissible(
-                  // elevation: 3.0,
-                  // color: Colors.blueAccent,
                   key: Key(i.toString()),
                   confirmDismiss: (direction) async {
                     _deleteAlert(heroes.documents[i].documentID, i);
@@ -132,53 +130,58 @@ class _HeroListState extends State<HeroList> {
                       ],
                     ),
                   ),
-                  child: ListTile(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              HeroDetailScreen(hero: heroes.documents[i]),
-                        ),
-                      );
-                    },
-                    leading: Column(
-                      children: <Widget>[
-                        Container(
-                          width: 50.0,
-                          height: 50.0,
-                          child: Card(
-                            semanticContainer: true,
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)),
-                            child: heroes.documents[i].data['heroImage'] != null
-                                ? FadeInImage.assetNetwork(
-                                    image:
-                                        heroes.documents[i].data['heroImage'],
-                                    placeholder: 'assets/images/loading.gif',
-                                    fit: BoxFit.fill)
-                                : Image.asset(
-                                    'assets/images/hero.png',
-                                    fit: BoxFit.cover,
-                                  ),
-                            elevation: 5,
+                  child: Card(
+                    elevation: 3.0,
+                    color: Colors.blueAccent,
+                    child: ListTile(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                HeroDetailScreen(hero: heroes.documents[i]),
                           ),
-                        )
-                      ],
+                        );
+                      },
+                      leading: Column(
+                        children: <Widget>[
+                          Container(
+                            width: 50.0,
+                            height: 50.0,
+                            child: Card(
+                              semanticContainer: true,
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0)),
+                              child: heroes.documents[i].data['heroImage'] !=
+                                      null
+                                  ? FadeInImage.assetNetwork(
+                                      image:
+                                          heroes.documents[i].data['heroImage'],
+                                      placeholder: 'assets/images/loading.gif',
+                                      fit: BoxFit.fill)
+                                  : Image.asset(
+                                      'assets/images/hero.png',
+                                      fit: BoxFit.cover,
+                                    ),
+                              elevation: 5,
+                            ),
+                          )
+                        ],
+                      ),
+                      title: Text(
+                        heroes.documents[i].data['heroName'],
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(
+                        heroes.documents[i].data['heroShrtDesc'],
+                        style: TextStyle(color: Colors.white, fontSize: 12.0),
+                      ),
+                      trailing: Icon(Icons.navigate_next),
                     ),
-                    title: Text(
-                      heroes.documents[i].data['heroName'],
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      heroes.documents[i].data['heroShrtDesc'],
-                      style: TextStyle(color: Colors.white, fontSize: 12.0),
-                    ),
-                    trailing: Icon(Icons.navigate_next),
                   ),
                 );
               },
