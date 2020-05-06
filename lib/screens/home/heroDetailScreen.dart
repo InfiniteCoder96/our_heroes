@@ -58,8 +58,14 @@ class _HeroDetailScreenState extends State<HeroDetailScreen> {
           )
         ],
       ),
-      backgroundColor: Color(0xFF398AE5),
-      body: LayoutStarts(hero: widget.hero),
+      // backgroundColor: Color(0xFF398AE5),
+      body: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [Colors.blue, Colors.red])),
+          child: LayoutStarts(hero: widget.hero)),
     );
   }
 }
@@ -150,8 +156,7 @@ class HeroDetails extends StatelessWidget {
                         ? FadeInImage.assetNetwork(
                             image: hero.data['heroImage'],
                             placeholder: 'assets/images/loading.gif',
-                            fit: BoxFit.fill
-                          )
+                            fit: BoxFit.fill)
                         : Image.asset(
                             'assets/images/hero.png',
                             fit: BoxFit.cover,
@@ -257,11 +262,11 @@ class SheetContainer extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(top: 15),
             height: sheetItemHeight,
-            child: AutoSizeText(
-                    hero.data['heroDesc'],
-                    style: TextStyle(color: Colors.black, fontSize: 20.0)
-              ),
-            
+            child: AutoSizeText(hero.data['heroDesc'],
+                style: TextStyle(
+                  color: Colors.black, 
+                  fontSize: 20.0
+                  )),
           )
         ],
       ),

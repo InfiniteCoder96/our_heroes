@@ -44,6 +44,7 @@ dev_dependencies:
   cached_network_image: ^2.1.0+1
   auto_size_text: ^2.1.0
   google_sign_in: ^4.4.4
+  google_fonts: ^1.0.0
 
 
 

@@ -50,6 +50,19 @@ class DatabaseService{
     }
   }
 
+    deleteFromFavourites(String documentID) async {
+    try {
+      await favHeroCollection
+          .document(this.uid)
+          .setData({
+        'heroes': FieldValue.arrayRemove([documentID])
+      }, merge: true);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
   isFavourite(String documentId) async{
     
   

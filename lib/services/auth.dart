@@ -123,6 +123,16 @@ class AuthService {
     }
   }
 
+  deleteFromFavourites(String documentID) async {
+    try {
+      FirebaseUser _user = await FirebaseAuth.instance.currentUser();
+      await DatabaseService(uid: _user.uid).deleteFromFavourites(documentID);
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
   // sign out
   Future signOut() async {
     try {

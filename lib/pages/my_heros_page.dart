@@ -13,6 +13,8 @@ import 'package:our_heroes/utilities/styles.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
+import '../screens/wrapper.dart';
+
 class MyHerosPage extends StatefulWidget {
   @override
   _MyHerosPageState createState() => _MyHerosPageState();
@@ -384,6 +386,41 @@ class _MyHerosPageState extends State<MyHerosPage> {
     Navigator.of(context).pop();
   }
 
+    Future<void> _deleteAlert(String favHeroId) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Remove from my favourites Alert'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Are you sure you want remove?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text('Yes, I am sure'),
+              onPressed: () async {
+                _auth.deleteFromFavourites(favHeroId);
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => Wrapper()));
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return heroes == null || heroDetails == null
@@ -421,6 +458,9 @@ class _MyHerosPageState extends State<MyHerosPage> {
                                         heroes != null ? heroes.length : 0,
                                         (index) {
                                       return GestureDetector(
+                                        onLongPress: (){
+                                          _deleteAlert(heroes.elementAt(index));
+                                        },
                                         onTap: () {
                                           Navigator.push(
                                               context,
