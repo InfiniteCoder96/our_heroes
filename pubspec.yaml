@@ -19,6 +19,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+    
   
 
 
@@ -42,6 +43,8 @@ dev_dependencies:
   connectivity: ^0.4.8+2
   cached_network_image: ^2.1.0+1
   auto_size_text: ^2.1.0
+  google_sign_in: ^4.4.4
+
 
 
 

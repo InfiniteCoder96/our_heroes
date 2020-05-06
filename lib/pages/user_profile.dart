@@ -43,7 +43,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
         userNameFir = user.data['name'].toString();
         userEmailFir = user.data['email'].toString();
 
-userName= user.data['name'].toString();
+        userName = user.data['name'].toString();
         userEmail = user.data['email'].toString();
 
         loading = false;
@@ -112,7 +112,6 @@ userName= user.data['name'].toString();
       userImageFir = downloadUrl;
       userNameFir = userName;
       userEmailFir = userEmail;
-
     });
 
     Navigator.of(context).pop();
@@ -157,6 +156,41 @@ userName= user.data['name'].toString();
               child: Text('Yes, I am sure'),
               onPressed: () async {
                 _auth.signOut();
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => Wrapper()));
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _deleteAlert() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Deactivate Account Alert'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Are you sure you want deactivate?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text('Yes, I am sure'),
+              onPressed: () async {
+                _auth.deleteUserDetails();
                 Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => Wrapper()));
               },
@@ -579,10 +613,15 @@ userName= user.data['name'].toString();
                               children: <Widget>[
                                 Icon(Icons.close, color: Colors.red),
                                 SizedBox(width: 15.0),
-                                Text(
-                                  "Deactivate account",
-                                  style: TextStyle(color: Colors.red),
-                                )
+                                new GestureDetector(
+                                  onTap: () {
+                                    _deleteAlert();
+                                  },
+                                  child: Text(
+                                    "Deactivate account",
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                ),
                               ],
                             ),
                           ]),
