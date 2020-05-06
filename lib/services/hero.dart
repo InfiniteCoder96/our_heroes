@@ -76,6 +76,12 @@ class HeroService {
 
   }
 
+  deleteHeroById(String heroId) async{
+
+    await _database.heroCollection.document(heroId).delete();
+    
+  }
+
   getHeroByIds(List<String> heroIds) async{
 
     List<DocumentSnapshot> heroDetails = List();
