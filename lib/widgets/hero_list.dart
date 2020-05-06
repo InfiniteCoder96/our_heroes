@@ -62,8 +62,7 @@ class _HeroListState extends State<HeroList> {
           children: <Widget>[
             SearchField(),
             Expanded(
-                child: Container(
-                    child: SmartRefresher(
+                child: SmartRefresher(
                         enablePullUp: true,
                         header: WaterDropHeader(),
                         controller: _refreshController,
@@ -132,9 +131,9 @@ class _HeroListState extends State<HeroList> {
                               ),
                             );
                           },
-                        )))),
+                        ))),
           ],
-        ),
+        )
       );
     } else {
       return Loading();

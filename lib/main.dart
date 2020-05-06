@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:our_heroes/models/user.dart';
 import 'package:our_heroes/screens/wrapper.dart';
 import 'package:our_heroes/services/auth.dart';
+import 'package:our_heroes/services/message_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:our_heroes/screens/onboarding_screen.dart';
@@ -34,8 +35,11 @@ class _MyAppState extends State<MyApp> {
   initState() {
     super.initState();
 
+    MessageHandler();
+
     Timer.run(() {
       try {
+        
         subscription = Connectivity()
             .onConnectivityChanged
             .listen((ConnectivityResult result) {
@@ -99,6 +103,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+
     return ((initScreen == 0 || initScreen == null)
             ? OnboardingScreen()
             : Wrapper());

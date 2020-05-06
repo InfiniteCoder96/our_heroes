@@ -39,7 +39,7 @@ class _MessageHandlerState extends State<MessageHandler> {
       _saveDeviceToken();
     }
 
-    /* _fcm.configure(
+    _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
         print('onMessage: $message');
       },
@@ -49,7 +49,7 @@ class _MessageHandlerState extends State<MessageHandler> {
       onLaunch: (Map<String, dynamic> message) async {
         print('onLaunch: $message');
       },
-    ); */
+    );
   }
 
   _saveDeviceToken() async{
