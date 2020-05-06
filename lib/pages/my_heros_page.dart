@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:our_heroes/screens/home/fav_hero_detail.dart';
 import 'package:our_heroes/screens/home/heroDetailScreen.dart';
 import 'package:our_heroes/services/auth.dart';
 import 'package:our_heroes/services/hero.dart';
@@ -466,7 +467,7 @@ class _MyHerosPageState extends State<MyHerosPage> {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
-                                                    HeroDetailScreen(
+                                                    FavHeroDetailScreen(
                                                   hero: heroDetails != null
                                                       ? heroDetails
                                                           .elementAt(index)

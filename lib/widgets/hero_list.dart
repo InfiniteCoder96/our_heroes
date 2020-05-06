@@ -106,8 +106,41 @@ class _HeroListState extends State<HeroList> {
                 return Dismissible(
                   key: Key(i.toString()),
                   confirmDismiss: (direction) async {
-                    _deleteAlert(heroes.documents[i].documentID, i);
+                    if (direction == DismissDirection.startToEnd) {
+                      _deleteAlert(heroes.documents[i].documentID, i);
+                      
+                    } else if (direction == DismissDirection.endToStart) {
+                      Scaffold.of(context).showSnackBar(
+                          SnackBar(content: Text("Swipe to right")));
+                    }
+                    
                   },
+                  secondaryBackground:Container(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topRight,
+                            end: Alignment.bottomLeft,
+                            colors: [Colors.green, Colors.greenAccent])),
+                    child: Row(
+                      children: <Widget>[
+                        SizedBox(
+                          height: 20.0,
+                          width: 130.0,
+                        ),
+                        Text(
+                          "Slide to Edit Hero",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 20.0, width: 20.0),
+                        Icon(
+                          Icons.edit,
+                        )
+                      ],
+                    ),
+                  ) ,
                   background: Container(
                     decoration: BoxDecoration(
                         gradient: LinearGradient(
