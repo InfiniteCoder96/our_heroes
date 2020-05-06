@@ -371,7 +371,7 @@ class _MyHerosPageState extends State<MyHerosPage> {
             key: _scaffoldKey,
             body: Container(
               padding: EdgeInsets.only(top: 30.0),
-              color: Colors.grey[700],
+              color: Colors.blue[50],
               child: Column(
                 children: [
                   SearchField(),

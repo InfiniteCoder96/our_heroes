@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:our_heroes/screens/home/heroDetailScreen.dart';
 import 'package:our_heroes/services/hero.dart';
 import 'package:our_heroes/shared/loading.dart';
+import 'package:our_heroes/widgets/search_field.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HeroList extends StatefulWidget {
@@ -52,76 +53,88 @@ class _HeroListState extends State<HeroList> {
     _refreshController.loadComplete();
   }
 
-  void filterSearchResults(String query) {}
-
   @override
   Widget build(BuildContext context) {
     if (heroes != null) {
       return Container(
-        child: SmartRefresher(
-            enablePullUp: true,
-            header: WaterDropHeader(),
-            controller: _refreshController,
-            onRefresh: _onRefresh,
-            onLoading: _onLoading,
-            child: ListView.builder(
-              itemCount: heroes.documents.length,
-              padding: EdgeInsets.all(5.0),
-              itemBuilder: (context, i) {
-                return Card(
-                  elevation: 3.0,
-                  color: Colors.blueAccent,
-                  child: ListTile(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              HeroDetailScreen(hero: heroes.documents[i]),
-                        ),
-                      );
-                    },
-                    leading: Column(
-                      children: <Widget>[
-                        Container(
-                          width: 50.0,
-                          height: 50.0,
-                          child: Card(
-                            semanticContainer: true,
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)),
-                            child: heroes.documents[i].data['heroImage'] != null
-                                ? FadeInImage.assetNetwork(
-                                    image:
-                                        heroes.documents[i].data['heroImage'],
-                                    placeholder: 'assets/images/loading.gif',
-                                    fit: BoxFit.fill)
-                                : Image.asset(
-                                    'assets/images/hero.png',
-                                    fit: BoxFit.cover,
-                                  ),
-                            elevation: 5,
-                          ),
-                        )
-                      ],
-                    ),
-                    title: Text(
-                      heroes.documents[i].data['heroName'],
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      heroes.documents[i].data['heroShrtDesc'],
-                      style: TextStyle(color: Colors.white, fontSize: 12.0),
-                    ),
-                    trailing: Icon(Icons.navigate_next),
-                  ),
-                );
-              },
-            )),
+        padding: EdgeInsets.only(top: 30.0),
+        child: Column(
+          children: <Widget>[
+            SearchField(),
+            Expanded(
+                child: Container(
+                    child: SmartRefresher(
+                        enablePullUp: true,
+                        header: WaterDropHeader(),
+                        controller: _refreshController,
+                        onRefresh: _onRefresh,
+                        onLoading: _onLoading,
+                        child: ListView.builder(
+                          itemCount: heroes.documents.length,
+                          padding: EdgeInsets.all(5.0),
+                          itemBuilder: (context, i) {
+                            return Card(
+                              elevation: 3.0,
+                              color: Colors.blueAccent,
+                              child: ListTile(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => HeroDetailScreen(
+                                          hero: heroes.documents[i]),
+                                    ),
+                                  );
+                                },
+                                leading: Column(
+                                  children: <Widget>[
+                                    Container(
+                                      width: 50.0,
+                                      height: 50.0,
+                                      child: Card(
+                                        semanticContainer: true,
+                                        clipBehavior:
+                                            Clip.antiAliasWithSaveLayer,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0)),
+                                        child: heroes.documents[i]
+                                                    .data['heroImage'] !=
+                                                null
+                                            ? FadeInImage.assetNetwork(
+                                                image: heroes.documents[i]
+                                                    .data['heroImage'],
+                                                placeholder:
+                                                    'assets/images/loading.gif',
+                                                fit: BoxFit.fill)
+                                            : Image.asset(
+                                                'assets/images/hero.png',
+                                                fit: BoxFit.cover,
+                                              ),
+                                        elevation: 5,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                title: Text(
+                                  heroes.documents[i].data['heroName'],
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                subtitle: Text(
+                                  heroes.documents[i].data['heroShrtDesc'],
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 12.0),
+                                ),
+                                trailing: Icon(Icons.navigate_next),
+                              ),
+                            );
+                          },
+                        )))),
+          ],
+        ),
       );
     } else {
       return Loading();

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:our_heroes/widgets/hero_list.dart';
-import 'package:our_heroes/widgets/search_field.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -14,21 +13,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-        backgroundColor: Colors.grey[700],
+        backgroundColor: Colors.blue[50],
         body: Container(
-          padding: EdgeInsets.only(top: 30.0),
-          child: Column(
-            children: <Widget>[
-              SearchField(),
-              Expanded(
-                child: Container(
-                  child: 
-                    HeroList()
-
-                ),
-              ),
-            ],
-          ),
+          child: HeroList(),
         ));
   }
 }

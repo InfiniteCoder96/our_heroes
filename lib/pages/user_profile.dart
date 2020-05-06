@@ -380,6 +380,7 @@ userName= user.data['name'].toString();
             body: SingleChildScrollView(
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 40.0, horizontal: 10.0),
+                color: Colors.blue[50],
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
