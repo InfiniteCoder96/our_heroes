@@ -20,7 +20,7 @@ class MyHerosPage extends StatefulWidget {
 
 class _MyHerosPageState extends State<MyHerosPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
+  final _formKey = GlobalKey<FormState>();
   AuthService _auth = AuthService();
 
   final HeroService _hero = HeroService();
@@ -87,116 +87,136 @@ class _MyHerosPageState extends State<MyHerosPage> {
               style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
             ),
             content: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: () {
-                      _showSettingsPanel();
-                    },
-                    child: Container(
-                      height: 120.0,
-                      width: 120.0,
-                      child: Card(
-                        semanticContainer: true,
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(60)),
-                        child: newheroImage != null
-                            ? Image.file(
-                                newheroImage,
-                                fit: BoxFit.cover,
-                              )
-                            : Image.asset(
-                                'assets/images/hero.png',
-                                fit: BoxFit.cover,
-                              ),
-                        elevation: 5,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 25.0),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    decoration: kBoxDecorationStyle,
-                    height: 60.0,
-                    child: TextField(
-                      maxLines: 10,
-                      onChanged: (value) {
-                        setState(() => heroName = value);
-                      },
-                      keyboardType: TextInputType.text,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'OpenSans',
-                      ),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(top: 14.0),
-                        prefixIcon: Icon(
-                          Icons.person,
-                          color: Colors.white,
+              child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          _showSettingsPanel();
+                        },
+                        child: Container(
+                          height: 120.0,
+                          width: 120.0,
+                          child: Card(
+                            semanticContainer: true,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(60)),
+                            child: newheroImage != null
+                                ? Image.file(
+                                    newheroImage,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.asset(
+                                    'assets/images/hero.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                            elevation: 5,
+                          ),
                         ),
-                        hintText: 'Enter your hero\'s name',
-                        hintStyle: kHintTextStyle,
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 5.0),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    decoration: kBoxDecorationStyle,
-                    height: 80.0,
-                    child: TextField(
-                      maxLines: 10,
-                      onChanged: (value) {
-                        setState(() => heroShortDescription = value);
-                      },
-                      keyboardType: TextInputType.text,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'OpenSans',
-                      ),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(top: 14.0),
-                        prefixIcon: Icon(
-                          Icons.text_fields,
-                          color: Colors.white,
+                      SizedBox(height: 25.0),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        decoration: kBoxDecorationStyle,
+                        height: 60.0,
+                        child: TextFormField(
+                          maxLines: 10,
+                          validator: (text) {
+                            if (text == null || text.isEmpty) {
+                              return 'Please enter your hero\'s name';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            setState(() => heroName = value);
+                          },
+                          keyboardType: TextInputType.text,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'OpenSans',
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.only(top: 14.0),
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: Colors.white,
+                            ),
+                            hintText: 'Enter your hero\'s name',
+                            hintStyle: kHintTextStyle,
+                          ),
                         ),
-                        hintText: 'Short description about your hero',
-                        hintStyle: kHintTextStyle,
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 5.0),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    decoration: kBoxDecorationStyle,
-                    height: 150.0,
-                    child: TextField(
-                      maxLines: 10,
-                      onChanged: (value) {
-                        setState(() => heroDescription = value);
-                      },
-                      keyboardType: TextInputType.text,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'OpenSans',
-                      ),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(top: 14.0),
-                        prefixIcon: Icon(
-                          Icons.textsms,
-                          color: Colors.white,
+                      SizedBox(height: 5.0),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        decoration: kBoxDecorationStyle,
+                        height: 80.0,
+                        child: TextFormField(
+                          validator: (text) {
+                            if (text == null || text.isEmpty) {
+                              return 'Please enter short description about your hero ';
+                            }
+                            return null;
+                          },
+                          maxLines: 10,
+                          onChanged: (value) {
+                            setState(() => heroShortDescription = value);
+                          },
+                          keyboardType: TextInputType.text,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'OpenSans',
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.only(top: 14.0),
+                            prefixIcon: Icon(
+                              Icons.text_fields,
+                              color: Colors.white,
+                            ),
+                            hintText: 'Short description about your hero',
+                            hintStyle: kHintTextStyle,
+                          ),
                         ),
-                        hintText: 'Write about your hero',
-                        hintStyle: kHintTextStyle,
                       ),
-                    ),
-                  ),
-                ],
-              ),
+                      SizedBox(height: 5.0),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        decoration: kBoxDecorationStyle,
+                        height: 150.0,
+                        child: TextFormField(
+                          validator: (text) {
+                            if (text == null || text.isEmpty) {
+                              return 'Please enter description about your hero';
+                            }
+                            return null;
+                          },
+                          maxLines: 10,
+                          onChanged: (value) {
+                            setState(() => heroDescription = value);
+                          },
+                          keyboardType: TextInputType.text,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'OpenSans',
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.only(top: 14.0),
+                            prefixIcon: Icon(
+                              Icons.textsms,
+                              color: Colors.white,
+                            ),
+                            hintText: 'Write about your hero',
+                            hintStyle: kHintTextStyle,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
             ),
             actions: <Widget>[
               FlatButton(
@@ -206,10 +226,11 @@ class _MyHerosPageState extends State<MyHerosPage> {
                   child: Text('Cancel')),
               FlatButton(
                   onPressed: () {
-                    setState(() => loading = true);
-
-                    addHero(context);
-                    Navigator.of(context).pop();
+                    if (_formKey.currentState.validate()) {
+                      setState(() => loading = true);
+                      addHero(context);
+                      Navigator.of(context).pop();
+                    }
                   },
                   child: Text('Submit'))
             ],
@@ -366,7 +387,7 @@ class _MyHerosPageState extends State<MyHerosPage> {
   @override
   Widget build(BuildContext context) {
     return heroes == null || heroDetails == null
-        ? Loading() 
+        ? Loading()
         : Scaffold(
             key: _scaffoldKey,
             body: Container(
