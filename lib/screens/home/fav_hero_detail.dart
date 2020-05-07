@@ -3,33 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:our_heroes/services/hero.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
-class HeroDetailScreen extends StatefulWidget {
+class FavHeroDetailScreen extends StatefulWidget {
   final DocumentSnapshot hero;
 
-  // In the constructor, require a Todo.
-  HeroDetailScreen({Key key, @required this.hero}) : super(key: key);
-
+  FavHeroDetailScreen({Key key, @required this.hero}) : super(key: key);
   @override
-  _HeroDetailScreenState createState() => _HeroDetailScreenState();
+  _FavHeroDetailScreenState createState() => _FavHeroDetailScreenState();
 }
 
-class _HeroDetailScreenState extends State<HeroDetailScreen> {
+class _FavHeroDetailScreenState extends State<FavHeroDetailScreen> {
   HeroService heroService = new HeroService();
-
-  bool _alreadyFav = false;
-
-  void checkFavourite() async {
-    bool isFavourite = await heroService.getFavourites(widget.hero.documentID);
-
-    setState(() {
-      _alreadyFav = isFavourite;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    checkFavourite();
   }
 
   @override
@@ -41,20 +27,10 @@ class _HeroDetailScreenState extends State<HeroDetailScreen> {
         actions: <Widget>[
           FlatButton(
             child: Icon(
-              _alreadyFav ? Icons.favorite : Icons.favorite_border,
-              color: _alreadyFav ? Colors.red[900] : Colors.white,
+              Icons.edit,
+              color: Colors.white,
             ),
-            onPressed: () {
-              setState(() {
-                if (_alreadyFav) {
-                  _alreadyFav = false;
-                } else {
-                  _alreadyFav = true;
-                }
-
-                heroService.addToFavourites(widget.hero.documentID);
-              });
-            },
+            onPressed: () {},
           )
         ],
       ),
@@ -263,10 +239,7 @@ class SheetContainer extends StatelessWidget {
             margin: EdgeInsets.only(top: 15),
             height: sheetItemHeight,
             child: AutoSizeText(hero.data['heroDesc'],
-                style: TextStyle(
-                  color: Colors.black, 
-                  fontSize: 20.0
-                  )),
+                style: TextStyle(color: Colors.black, fontSize: 20.0)),
           )
         ],
       ),

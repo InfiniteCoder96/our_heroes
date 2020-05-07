@@ -40,10 +40,9 @@ class _HomeScreenState extends State<HomeScreen> {
             currentPage = pages[index];
           });
         },
-        elevation: 0.0,
-        backgroundColor: Colors.white,
-        selectedItemColor: Colors.blueAccent,
-        unselectedItemColor: Colors.grey,
+        backgroundColor: Colors.white70,
+        selectedItemColor: Colors.redAccent[700],
+        unselectedItemColor: Colors.teal[900],
         currentIndex: currentTabIndex,
         type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem>[

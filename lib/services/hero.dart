@@ -62,12 +62,17 @@ class HeroService {
     DocumentSnapshot querySnapshot =
         await _database.favHeroCollection.document(_user.uid).get();
 
+
     if (querySnapshot.exists &&
         querySnapshot.data.containsKey("heroes") &&
         querySnapshot.data["heroes"] is List) {
       return List<String>.from(querySnapshot.data["heroes"]);
     }
     return [];
+  }
+
+  deleteHeroById(String heroId) async {
+    await _database.heroCollection.document(heroId).delete();
   }
 
   getHeroByIds(List<String> heroIds) async {
