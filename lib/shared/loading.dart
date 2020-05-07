@@ -9,10 +9,10 @@ class Loading extends StatelessWidget {
           gradient: LinearGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
-              colors: [Colors.blue, Colors.red])),
+              colors: [Colors.white, Colors.blueAccent])),
       child: Center(
         child: SpinKitCircle(
-          color: Colors.red[900],
+          color: Colors.white,
           size: 50.0,
           duration: Duration(milliseconds: 2000),
         ),

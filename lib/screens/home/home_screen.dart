@@ -41,13 +41,13 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         },
         backgroundColor: Colors.white70,
-        selectedItemColor: Colors.redAccent[700],
-        unselectedItemColor: Colors.teal[900],
+        selectedItemColor: Colors.blueAccent,
+        unselectedItemColor: Colors.grey,
         currentIndex: currentTabIndex,
         type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.offline_bolt),
+            icon: Icon(Icons.home),
             title: Text("Home")
           ),
           BottomNavigationBarItem(

@@ -17,11 +17,10 @@ class _HomePageState extends State<HomePage> {
           gradient: LinearGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
-              colors: [Colors.blue, Colors.red])),
+              colors: [Colors.white, Colors.blueAccent])),
       padding: EdgeInsets.only(top: 30.0),
       child: Column(
         children: <Widget>[
-          SearchField(),
           Expanded(
             child: Container(child: HeroList()),
           ),

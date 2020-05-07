@@ -434,7 +434,7 @@ class _MyHerosPageState extends State<MyHerosPage> {
                   gradient: LinearGradient(
                       begin: Alignment.topRight,
                       end: Alignment.bottomLeft,
-                      colors: [Colors.blue, Colors.red])),
+                      colors: [Colors.white, Colors.blueAccent])),
               child: Column(
                 children: [
                   SearchField(),

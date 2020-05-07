@@ -5,7 +5,15 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  final DatabaseService _db = DatabaseService();
+
+  GoogleSignIn _googleSignIn = new GoogleSignIn();
+
+  String username;
+    String email;
+    String image;
+    String type;
 
   // create user obj based on firebase user
   User _userFromFirebaseUser(FirebaseUser user) {
@@ -45,6 +53,30 @@ class AuthService {
     }
   }
 
+  Future signInGoogle() async {
+
+    
+
+    try{
+      GoogleSignInAccount result = await _googleSignIn.signIn();
+      GoogleSignInAuthentication googleAuth = await result.authentication;
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+    
+      AuthResult results = await _auth.signInWithCredential(credential);
+      FirebaseUser user = results.user;
+
+      return _userFromFirebaseUser(user);
+    }
+    catch(e){
+      print(e); 
+      return null;
+    }
+  }
+
+
   // sign up with email & password
   Future registerUser(String name, String email, String password) async {
     try {
@@ -61,24 +93,7 @@ class AuthService {
     }
   }
 
-  Future<FirebaseUser> googleSignIn() async {
-    print("signed in started");
-    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
 
-    final AuthCredential autheCredentials = GoogleAuthProvider.getCredential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-    print("signed in access token" + googleAuth.accessToken);
-    final AuthResult authResult =
-        await _auth.signInWithCredential(autheCredentials);
-    final FirebaseUser user = authResult.user;
-    updateCurrentUserDetails(user.displayName, user.email, user.photoUrl);
-    print("signed in " + user.displayName);
-    return user;
-  }
 
   // get user details
   Future getUserDetails() async {

@@ -208,7 +208,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
           return Container(
             height: 150.0,
             child: Container(
-                color: Colors.indigo[900],
+                color: Colors.blueAccent,
                 padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 50.0),
                 child: GridView.count(crossAxisCount: 2, children: [
                   GestureDetector(
@@ -218,6 +218,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                     },
                     child: Card(
                         semanticContainer: true,
+                        color: Colors.grey[300],
                         clipBehavior: Clip.hardEdge,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
@@ -226,14 +227,18 @@ class _UserProfilePageState extends State<UserProfilePage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             Expanded(
-                                child: Container(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(18.0),
+                                  child: Container(
                               decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image:
-                                        AssetImage('assets/images/camera.png'),
-                                    fit: BoxFit.cover),
+                                  image: DecorationImage(
+                                      image:
+                                          AssetImage('assets/images/camera.png'),
+                                      fit: BoxFit.cover),
+                                      
                               ),
-                            )),
+                            ),
+                                )),
                             Padding(
                                 padding: EdgeInsets.all(5.0),
                                 child: Text(
@@ -250,6 +255,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                     },
                     child: Card(
                         semanticContainer: true,
+                        color: Colors.grey[300],
                         clipBehavior: Clip.hardEdge,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
@@ -258,14 +264,17 @@ class _UserProfilePageState extends State<UserProfilePage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             Expanded(
-                                child: Container(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Container(
                               decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image:
-                                        AssetImage('assets/images/gallery.png'),
-                                    fit: BoxFit.fill),
+                                  image: DecorationImage(
+                                      image:
+                                          AssetImage('assets/images/gallery.png'),
+                                      fit: BoxFit.cover),
                               ),
-                            )),
+                            ),
+                                )),
                             Padding(
                                 padding: EdgeInsets.all(5.0),
                                 child: Text(
@@ -417,7 +426,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                     gradient: LinearGradient(
                         begin: Alignment.topRight,
                         end: Alignment.bottomLeft,
-                        colors: [Colors.blueAccent, Colors.redAccent])),
+                        colors: [Colors.white, Colors.blueAccent])),
                 padding: EdgeInsets.symmetric(vertical: 40.0, horizontal: 10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
