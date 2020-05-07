@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:our_heroes/screens/home/heroDetailScreen.dart';
@@ -5,18 +7,33 @@ import 'package:our_heroes/services/hero.dart';
 import 'package:our_heroes/shared/loading.dart';
 import 'package:our_heroes/widgets/search_field.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:our_heroes/utilities/styles.dart';
+import 'package:image_picker/image_picker.dart';
 
 class HeroList extends StatefulWidget {
   final String query;
   HeroList({this.query});
-
   @override
   _HeroListState createState() => _HeroListState();
 }
 
 class _HeroListState extends State<HeroList> {
   final HeroService _hero = HeroService();
+  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   QuerySnapshot heroes;
+  DocumentSnapshot existingHero;
+  bool loading = false;
+
+  String documentID;
+  String heroName;
+  String heroDescription;
+  String heroShortDescription;
+  File heroImage;
+  var heroImageFir;
+
+  bool heroImageAvailable = false;
 
   void setDe() {}
 
@@ -54,6 +71,344 @@ class _HeroListState extends State<HeroList> {
   }
 
   void filterSearchResults(String query) {}
+  Future getImage(String image) async {
+    if (image.isNotEmpty) {
+      setState(() {
+        heroImageFir = image;
+        heroImageAvailable = true;
+      });
+    }
+  }
+
+  Future<void> retrieveLostData() async {
+    final LostDataResponse response = await ImagePicker.retrieveLostData();
+    if (response == null) {
+      return;
+    }
+    if (response.file != null) {
+      setState(() {
+        setState(() {
+          heroImage = response.file;
+        });
+      });
+    } else {}
+  }
+
+  Future<bool> updateHeroDialog(
+      BuildContext context, DocumentSnapshot existingHero) async {
+    existingHero = existingHero;
+    heroName = existingHero.data['heroName'];
+    heroDescription = existingHero.data['heroDesc'];
+    heroShortDescription = existingHero.data['heroShrtDesc'];
+    print(existingHero.data);
+    getImage(existingHero.data['heroImage']);
+    retrieveLostData();
+    documentID = existingHero.documentID;
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            key: _scaffoldKey,
+            title: Text(
+              'Update a hero',
+              style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+            ),
+            content: SingleChildScrollView(
+              child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          _showSettingsPanel();
+                        },
+                        child: Container(
+                          height: 120.0,
+                          width: 120.0,
+                          child: Card(
+                            semanticContainer: true,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(60)),
+                            child: heroImageAvailable
+                                ? (heroImage != null)
+                                    ? Image.file(
+                                        heroImage,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : FadeInImage.assetNetwork(
+                                        placeholder:
+                                            'assets/images/loading.gif',
+                                        image: heroImageFir,
+                                        fit: BoxFit.cover,
+                                      )
+                                : Image.asset(
+                                    'assets/images/hero.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                            elevation: 5,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 25.0),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        decoration: kBoxDecorationStyle,
+                        height: 60.0,
+                        child: TextFormField(
+                          maxLines: 10,
+                          validator: (text) {
+                            if (text == null || text.isEmpty) {
+                              return 'Please enter your hero\'s name';
+                            }
+                            return null;
+                          },
+                          controller: TextEditingController()..text = heroName,
+                          onChanged: (value) {
+                            setState(() => heroName = value);
+                          },
+                          keyboardType: TextInputType.text,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'OpenSans',
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.only(top: 14.0),
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 5.0),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        decoration: kBoxDecorationStyle,
+                        height: 80.0,
+                        child: TextFormField(
+                          validator: (text) {
+                            if (text == null || text.isEmpty) {
+                              return 'Please enter short description about your hero ';
+                            }
+                            return null;
+                          },
+                          maxLines: 10,
+                          controller: TextEditingController()
+                            ..text = heroShortDescription,
+                          onChanged: (value) {
+                            setState(() => heroShortDescription = value);
+                          },
+                          keyboardType: TextInputType.text,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'OpenSans',
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.only(top: 14.0),
+                            prefixIcon: Icon(
+                              Icons.text_fields,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 5.0),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        decoration: kBoxDecorationStyle,
+                        height: 150.0,
+                        child: TextFormField(
+                          validator: (text) {
+                            if (text == null || text.isEmpty) {
+                              return 'Please enter description about your hero';
+                            }
+                            return null;
+                          },
+                          maxLines: 10,
+                          controller: TextEditingController()
+                            ..text = heroDescription,
+                          onChanged: (value) {
+                            setState(() => heroDescription = value);
+                          },
+                          keyboardType: TextInputType.text,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'OpenSans',
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.only(top: 14.0),
+                            prefixIcon: Icon(
+                              Icons.textsms,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Cancel')),
+              FlatButton(
+                  onPressed: () {
+                    if (_formKey.currentState.validate()) {
+                      setState(() => loading = true);
+                      updateHero(context);
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  child: Text('Update'))
+            ],
+          );
+        });
+  }
+
+  void _showSettingsPanel() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            height: 150.0,
+            child: Container(
+                color: Colors.indigo[900],
+                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 50.0),
+                child: GridView.count(crossAxisCount: 2, children: [
+                  GestureDetector(
+                    onTap: () {
+                      picksImage('camera');
+                      Navigator.of(context).pop();
+                    },
+                    child: Card(
+                        semanticContainer: true,
+                        clipBehavior: Clip.hardEdge,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Expanded(
+                                child: Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image:
+                                        AssetImage('assets/images/camera.png'),
+                                    fit: BoxFit.cover),
+                              ),
+                            )),
+                            Padding(
+                                padding: EdgeInsets.all(5.0),
+                                child: Text(
+                                  "Camera",
+                                  style: TextStyle(fontSize: 13.0),
+                                )),
+                          ],
+                        )),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      picksImage('gallery');
+                      Navigator.of(context).pop();
+                    },
+                    child: Card(
+                        semanticContainer: true,
+                        clipBehavior: Clip.hardEdge,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Expanded(
+                                child: Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image:
+                                        AssetImage('assets/images/gallery.png'),
+                                    fit: BoxFit.fill),
+                              ),
+                            )),
+                            Padding(
+                                padding: EdgeInsets.all(5.0),
+                                child: Text(
+                                  "Gallery",
+                                  style: TextStyle(fontSize: 13.0),
+                                )),
+                          ],
+                        )),
+                  )
+                ])),
+          );
+        });
+    super.initState();
+  }
+
+  Future picksImage(String type) async {
+    setState(() {
+      loading = true;
+    });
+
+    var tempImage;
+
+    if (type == 'gallery')
+      tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    else if (type == 'camera')
+      tempImage = await ImagePicker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      heroImage = tempImage;
+      loading = false;
+    });
+  }
+
+  Future updateHero(BuildContext context) async {
+    SnackBar(
+      content: Text('Your hero is updating.'),
+      backgroundColor: Colors.green,
+    );
+
+    var downloadUrl;
+
+    if (heroImage != null) {
+      final StorageReference _storage = FirebaseStorage.instance
+          .ref()
+          .child('hero_pics/${this.documentID}_.jpg');
+
+      StorageUploadTask _uploadTask = _storage.putFile(heroImage);
+
+      StorageTaskSnapshot _taskSnapshot = await _uploadTask.onComplete;
+      downloadUrl = await _taskSnapshot.ref.getDownloadURL();
+      heroImage = downloadUrl;
+    }
+
+    Map<String, String> heroData = {
+      'heroName': this.heroName,
+      'heroDesc': this.heroDescription,
+      'heroShrtDesc': this.heroShortDescription,
+      'heroImage': downloadUrl
+    };
+
+    //await _hero.addHero(heroData);
+
+    await _hero.updateHeroe(documentID, heroData);
+
+    _onLoading();
+    SnackBar(
+      content: Text('Your hero updated successfully.'),
+      backgroundColor: Colors.green,
+    );
+
+    Navigator.of(context).pop();
+  }
 
   Future<void> _deleteAlert(String heroId, int index) async {
     return showDialog<void>(
@@ -111,14 +466,11 @@ class _HeroListState extends State<HeroList> {
                   confirmDismiss: (direction) async {
                     if (direction == DismissDirection.startToEnd) {
                       _deleteAlert(heroes.documents[i].documentID, i);
-                      
                     } else if (direction == DismissDirection.endToStart) {
-                      Scaffold.of(context).showSnackBar(
-                          SnackBar(content: Text("Swipe to right")));
+                      updateHeroDialog(context, heroes.documents[i]);
                     }
-                    
                   },
-                  secondaryBackground:Container(
+                  secondaryBackground: Container(
                     decoration: BoxDecoration(
                         gradient: LinearGradient(
                             begin: Alignment.topRight,
@@ -143,7 +495,7 @@ class _HeroListState extends State<HeroList> {
                         )
                       ],
                     ),
-                  ) ,
+                  ),
                   background: Container(
                     decoration: BoxDecoration(
                         gradient: LinearGradient(

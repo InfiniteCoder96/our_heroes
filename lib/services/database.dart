@@ -27,9 +27,11 @@ class DatabaseService{
   }
 
 
-  Future updateHeroData(String name, ) async{
-    return await heroCollection.document(uid).setData({
-      'name': name,
+  Future updateHeroData(String documentID,Map<String, String> heroData ) async{
+    return await heroCollection.document(documentID).setData({
+      'heroName': heroData['heroName'],
+      'heroDesc': heroData['heroDesc'],
+      'heroShrtDesc': heroData['heroShrtDesc']
     });
   }
 

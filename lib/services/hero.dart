@@ -30,6 +30,10 @@ class HeroService {
     }
   }
 
+  updateHeroe(String documentID, Map<String, String> heroData) async {
+    return await _database.updateHeroData(documentID, heroData);
+  }
+
   addToFavourites(String documentId) async {
     AuthService authService = AuthService();
 
@@ -84,5 +88,9 @@ class HeroService {
     }
 
     return heroDetails;
+  }
+
+  getHeroById(String heroId) async {
+    return await _database.heroCollection.document(heroId).get();
   }
 }
