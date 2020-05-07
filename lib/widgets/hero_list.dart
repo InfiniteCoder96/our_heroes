@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:our_heroes/screens/home/heroDetailScreen.dart';
 import 'package:our_heroes/services/hero.dart';
 import 'package:our_heroes/shared/loading.dart';
+import 'package:our_heroes/widgets/search_field.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HeroList extends StatefulWidget {
@@ -88,7 +89,6 @@ class _HeroListState extends State<HeroList> {
       },
     );
   }
-
   @override
   Widget build(BuildContext context) {
     if (heroes != null) {

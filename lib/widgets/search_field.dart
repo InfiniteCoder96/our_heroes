@@ -31,6 +31,15 @@ class _SearchFeildState extends State<SearchField> {
     super.initState();
   }
 
+  filterSearchResults(query) {
+    
+    if(query.lenght == 0){
+      setState(() {
+        
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -52,10 +61,10 @@ class _SearchFeildState extends State<SearchField> {
               suffixIcon: Material(
                 elevation: 5.0,
                 borderRadius: BorderRadius.circular(30.0),
-                color: Colors.indigo[900],
+                color: Colors.white,
                 child: Icon(
                   Icons.search,
-                  color: Colors.white,
+                  color: Colors.blueAccent,
                 ),
               ),
               border: InputBorder.none),

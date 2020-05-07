@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
         type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.offline_bolt),
+            icon: Icon(Icons.home),
             title: Text("Home")
           ),
           BottomNavigationBarItem(

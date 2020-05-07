@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:our_heroes/widgets/hero_list.dart';
-import 'package:our_heroes/widgets/search_field.dart';
 
 class HomePage extends StatefulWidget {
   @override
