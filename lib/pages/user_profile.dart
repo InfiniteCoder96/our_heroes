@@ -419,6 +419,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         end: Alignment.bottomLeft,
                         colors: [Colors.blueAccent, Colors.redAccent])),
                 padding: EdgeInsets.symmetric(vertical: 40.0, horizontal: 10.0),
+                color: Colors.blue[50],
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
