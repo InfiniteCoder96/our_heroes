@@ -182,15 +182,14 @@ class _LoginState extends State<Login> {
                 error = 'Sorry, those credentials are not in our system.';
                 loading = false;
               });
-            }
-            else{
-              setState((){
+            } else {
+              setState(() {
                 loading = false;
               });
 
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SplashScreen()));
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => SplashScreen()));
             }
-            
           } else {
             //    If all data are not valid then start auto validation.
             setState(() {
@@ -267,16 +266,30 @@ class _LoginState extends State<Login> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           _buildSocialBtn(
-            () {
-              
-            },
+            () {},
             AssetImage(
               'assets/images/facebook.jpg',
             ),
           ),
           _buildSocialBtn(
-            (){
-              _auth.signInGoogle();
+            () {
+              setState(() => loading = true);
+
+              dynamic result = _auth.signInGoogle();
+
+              if (result == null) {
+                setState(() {
+                  error = 'Sorry, those credentials are not in our system.';
+                  loading = false;
+                });
+              } else {
+                setState(() {
+                  loading = false;
+                });
+
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => SplashScreen()));
+              }
             },
             AssetImage(
               'assets/images/google.jpg',
@@ -384,8 +397,7 @@ class _LoginState extends State<Login> {
                               SizedBox(height: 12.0),
                               Text(error,
                                   style: TextStyle(
-                                      color: Colors.red, fontSize: 14.0)
-                              ),
+                                      color: Colors.red, fontSize: 14.0)),
                               _buildLoginBtn(),
                               _buildSignInWithText(),
                               _buildSocialBtnRow(),

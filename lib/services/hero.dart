@@ -26,7 +26,7 @@ class HeroService {
           .where("heroName", arrayContains: 'you')
           .getDocuments();
     } else {
-      return await _database.heroCollection.getDocuments();
+      return await _database.heroCollection.orderBy('heroName').getDocuments();
     }
   }
 

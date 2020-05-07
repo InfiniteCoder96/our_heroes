@@ -19,13 +19,8 @@ class _HomePageState extends State<HomePage> {
               end: Alignment.bottomLeft,
               colors: [Colors.white, Colors.blueAccent])),
       padding: EdgeInsets.only(top: 30.0),
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            child: Container(child: HeroList()),
-          ),
-        ],
-      ),
-    ));
+      child: HeroList()),
+          
+    );
   }
 }
