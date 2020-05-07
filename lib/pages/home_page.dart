@@ -20,7 +20,6 @@ class _HomePageState extends State<HomePage> {
       padding: EdgeInsets.only(top: 30.0),
       child: Column(
         children: <Widget>[
-          SearchField(),
           Expanded(
             child: Container(child: HeroList()),
           ),
