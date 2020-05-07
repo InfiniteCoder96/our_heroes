@@ -24,15 +24,6 @@ class _FavHeroDetailScreenState extends State<FavHeroDetailScreen> {
       appBar: AppBar(
         backgroundColor: Color(0xFF398AE5),
         elevation: 0.0,
-        actions: <Widget>[
-          FlatButton(
-            child: Icon(
-              Icons.edit,
-              color: Colors.white,
-            ),
-            onPressed: () {},
-          )
-        ],
       ),
       // backgroundColor: Color(0xFF398AE5),
       body: Container(
