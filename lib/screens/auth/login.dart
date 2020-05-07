@@ -267,13 +267,17 @@ class _LoginState extends State<Login> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           _buildSocialBtn(
-            () => print('Login with Facebook'),
+            () {
+              
+            },
             AssetImage(
               'assets/images/facebook.jpg',
             ),
           ),
           _buildSocialBtn(
-            () => print('Login with Google'),
+            (){
+              _auth.signInGoogle();
+            },
             AssetImage(
               'assets/images/google.jpg',
             ),
