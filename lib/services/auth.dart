@@ -1,10 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:our_heroes/models/user.dart';
 import 'package:our_heroes/services/database.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final DatabaseService _db = DatabaseService();
+
+  GoogleSignIn _googleSignIn = new GoogleSignIn();
+
+  String username;
+    String email;
+    String image;
+    String type;
 
   // create user obj based on firebase user
   User _userFromFirebaseUser(FirebaseUser user){
@@ -45,6 +54,29 @@ class AuthService {
     }
   }
 
+  Future signInGoogle() async {
+
+    
+
+    try{
+      GoogleSignInAccount result = await _googleSignIn.signIn();
+      GoogleSignInAuthentication googleAuth = await result.authentication;
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+    
+      AuthResult results = await _auth.signInWithCredential(credential);
+      FirebaseUser user = results.user;
+
+      return _userFromFirebaseUser(user);
+    }
+    catch(e){
+      print(e); 
+      return null;
+    }
+  }
+
 
   // sign up with email & password
   Future registerUser(String name, String email, String password) async{
@@ -61,6 +93,7 @@ class AuthService {
       return null;
     }
   }
+
 
   // get user details
   Future getUserDetails() async{

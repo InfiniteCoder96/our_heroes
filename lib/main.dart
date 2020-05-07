@@ -18,9 +18,7 @@ Future<void> main() async {
   initScreen = await prefs.getInt("initScreen");
   await prefs.setInt("initScreen", 1);
   runApp(StreamProvider<User>.value(
-      value: AuthService().userAuthState,
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,home: MyApp())));
+        value: AuthService().userAuthState,child:MaterialApp(debugShowCheckedModeBanner: false, home: MyApp())));
 }
 
 class MyApp extends StatefulWidget {
@@ -31,6 +29,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   var subscription;
 
+  bool connectivity = false;
+
   @override
   initState() {
     super.initState();
@@ -39,14 +39,21 @@ class _MyAppState extends State<MyApp> {
 
     Timer.run(() {
       try {
-        
         subscription = Connectivity()
             .onConnectivityChanged
             .listen((ConnectivityResult result) {
           if (result == ConnectivityResult.mobile) {
-            // I am connected to a mobile network.
+            setState(() {
+              connectivity = true;
+            });
           } else if (result == ConnectivityResult.wifi) {
+            setState(() {
+              connectivity = true;
+            });
           } else {
+            setState(() {
+              connectivity = false;
+            });
             _showDialog();
           }
         });
@@ -64,14 +71,16 @@ class _MyAppState extends State<MyApp> {
 
   checkConnectivity() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
-     
-      Scaffold.of(context)
-        .showSnackBar(SnackBar(content : Text('You\'re now Connected...'), backgroundColor: Colors.green,));
-      
-    } 
-    else{
-       _showDialog();
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
+      setState(() {
+        connectivity = true;
+      });
+    } else {
+      setState(() {
+        connectivity = false;
+      });
+      _showDialog();
     }
   }
 
@@ -103,12 +112,14 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-
-    return ((initScreen == 0 || initScreen == null)
-            ? OnboardingScreen()
-            : Wrapper());
-      
-    
-  } 
-  
+    return StreamProvider<User>.value(
+        value: AuthService().userAuthState,
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: connectivity
+                ? ((initScreen == 0 || initScreen == null)
+                    ? OnboardingScreen()
+                    : Wrapper())
+                : Container()));
+  }
 }
