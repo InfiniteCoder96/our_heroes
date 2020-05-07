@@ -272,10 +272,10 @@ class _LoginState extends State<Login> {
             ),
           ),
           _buildSocialBtn(
-            () {
+            () async {
               setState(() => loading = true);
 
-              dynamic result = _auth.signInGoogle();
+              dynamic result = await _auth.signInGoogle();
 
               if (result == null) {
                 setState(() {
