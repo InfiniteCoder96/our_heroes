@@ -536,14 +536,14 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                         width: 70.0,
                                         decoration: BoxDecoration(
                                             border: Border.all(
-                                                color: Colors.white70),
+                                                color: Colors.blueAccent),
                                             borderRadius:
                                                 BorderRadius.circular(20.0)),
                                         child: Center(
                                           child: Text(
                                             "Edit",
                                             style: TextStyle(
-                                                color: Colors.white70,
+                                                color: Colors.blueAccent,
                                                 fontSize: 16.0),
                                           ),
                                         )),

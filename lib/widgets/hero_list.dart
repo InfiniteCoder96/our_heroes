@@ -92,8 +92,11 @@ class _HeroListState extends State<HeroList> {
   @override
   Widget build(BuildContext context) {
     if (heroes != null) {
-      return Container(
-        child: SmartRefresher(
+      return Column(
+        children: <Widget>[
+          SearchField(),
+          Expanded(
+            child: SmartRefresher(
             enablePullUp: true,
             header: WaterDropHeader(),
             controller: _refreshController,
@@ -223,7 +226,7 @@ class _HeroListState extends State<HeroList> {
                 );
               },
             )),
-      );
+      )]);
     } else {
       return Loading();
     }
